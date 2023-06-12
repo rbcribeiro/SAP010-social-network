@@ -7008,7 +7008,7 @@ const login = () => {
     
       <div class='left'>
         <figure class='logo-container'>
-          <img src='img/logo.png' id='logo' alt='Logo da ExploraA\xED'>
+          <img src='./img/logo.png' id='logo' alt='Logo da ExploraA\xED'>
         </figure>
         <h1>ExplorA\xED</h1>
         <br>
@@ -7043,10 +7043,10 @@ const login = () => {
 
           <figure>
             <button type='button' class='google-btn' id='google-btn'>
-              <img src='img/assets/google.png' id='google-img' alt='Logo do Google' width='100px'>
+              <img src='./img/google.png' id='google-img' alt='Logo do Google' width='100px'>
             </button>
             <button type='button' class='facebook-btn' id='btn-facebook'>
-              <img src='img/assets/facebook.png' id='facebook-img' alt='Logo do facebook' width='100px'>
+              <img src='./img/facebook.png' id='facebook-img' alt='Logo do facebook' width='100px'>
             </button>
           </figure>
         </form>
