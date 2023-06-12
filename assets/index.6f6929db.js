@@ -7183,7 +7183,7 @@ const register = () => {
     </section>
     <br>
     <nav>
-      <a class='btn-back' href='#login'><img src='img/assets/arrow.png' id='arrow-img' alt='imagem de seta' width='50px'></a>
+      <a class='btn-back' href='#login'><img src='./assets/arrow.png' id='arrow-img' alt='imagem de seta' width='50px'></a>
     </nav> 
   `;
   registrationForm.innerHTML = templateRegister;
