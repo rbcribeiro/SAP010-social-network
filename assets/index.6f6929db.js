@@ -7063,21 +7063,21 @@ const login = () => {
     const senha = senhaInput.value;
     loginWithEmail(email, senha).then(() => {
       window.location.hash = "#timeline";
-    }).catch(() => {
+    }).catch((error) => {
       alert("Usu\xE1rio ou senha incorretos");
     });
   };
   const handleGoogleLogin = () => {
     loginGoogle().then(() => {
       window.location.hash = "#timeline";
-    }).catch(() => {
+    }).catch((error) => {
       alert("Erro ao fazer login com o Google");
     });
   };
   const handleFacebookLogin = () => {
     loginFacebook().then(() => {
       window.location.hash = "#timeline";
-    }).catch(() => {
+    }).catch((error) => {
       alert("Erro ao fazer login com o Facebook");
     });
   };
