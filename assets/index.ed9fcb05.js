@@ -6976,13 +6976,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 getAuth(app);
 const getAppAuth = () => getAuth(app);
-const createUserWithEmail = (name2, email, password) => {
+const getUserName = () => {
+  const auth = getAppAuth();
+  const user = auth.currentUser;
+  if (user) {
+    return user.displayName;
+  }
+  return null;
+};
+const createUserWithEmail = (name2, lastName, email, password) => {
   const auth = getAppAuth();
   return createUserWithEmailAndPassword(auth, email, password).then(
     (userCredential) => {
       const user = userCredential.user;
       return updateProfile(user, {
-        displayName: `${name2}`
+        displayName: `${name2} ${lastName}`
       });
     }
   );
@@ -7005,48 +7013,46 @@ const login = () => {
   const container = document.createElement("div");
   const templateLogin = `
     <section class='login-wrap'>
-    
       <div class='left'>
         <figure class='logo-container'>
-          <img src='./assets/logo.png' id='logo' alt='Logo da ExploraA\xED'>
+          <img src='img/assets/logologin.png' id='logo' alt='Logo da ExploraA\xED'>
         </figure>
-        <h1>ExplorA\xED</h1>
+        <h1 class="title1">ExplorA\xED</h1>
         <br>
         <h6 class='left-text'>COMPARTILHE EXPERI\xCANCIAS E AVENTURAS.
           <br>
           RECEBA DICAS E INDICA\xC7\xD5ES.
         </h6>
       </div>
-
       <div class='right'>
-        <h2>Entrar</h2>
-        <form class='login-form'>
+          <form class='login-form'>
+          <br>
+          <h2 class="title">Entrar</h2>
           <div class='inputs-container'>
             <input type='text' class='inputs-info' placeholder='E-MAIL' id='email' />
             <input type='password' class='inputs-info' placeholder='SENHA' id='senha' />
+            <button type="button" id="show-password" class="btn-eye">
+            <img src='img/assets/ojo.png' id='eye-img' alt='Logo do olho'>
+            </button> 
           </div>
-
           <nav>
             <button type='button' id='login-button' href='#'>ENTRAR</button>
           </nav>
-
           <div class='txt1'>
             Esqueceu a senha? <br>
             N\xE3o possui uma conta?
             <button type='button' class='register-button'><a class='reg-btn' href='#register'>Cadastre-se</a></button>
           </div>
-
           <div class='txt2'>
             Ou <br>
             Entrar com:
           </div>
-
           <figure>
             <button type='button' class='google-btn' id='google-btn'>
-              <img src='./assets/google.png' id='google-img' alt='Logo do Google' width='100px'>
+              <img src='img/assets/icongoogle.png' id='google-img' alt='Logo do Google'>
             </button>
             <button type='button' class='facebook-btn' id='btn-facebook'>
-              <img src='./assets/facebook.png' id='facebook-img' alt='Logo do facebook' width='100px'>
+              <img src='img/assets/iconfacebook.png' id='facebook-img' alt='Logo do facebook'>
             </button>
           </figure>
         </form>
@@ -7063,27 +7069,36 @@ const login = () => {
     const senha = senhaInput.value;
     loginWithEmail(email, senha).then(() => {
       window.location.hash = "#timeline";
-    }).catch((error) => {
+    }).catch(() => {
       alert("Usu\xE1rio ou senha incorretos");
     });
   };
   const handleGoogleLogin = () => {
     loginGoogle().then(() => {
       window.location.hash = "#timeline";
-    }).catch((error) => {
+    }).catch(() => {
       alert("Erro ao fazer login com o Google");
     });
   };
   const handleFacebookLogin = () => {
     loginFacebook().then(() => {
       window.location.hash = "#timeline";
-    }).catch((error) => {
+    }).catch(() => {
       alert("Erro ao fazer login com o Facebook");
     });
   };
   loginButton.addEventListener("click", handleLogin);
   googleButton.addEventListener("click", handleGoogleLogin);
   facebookButton.addEventListener("click", handleFacebookLogin);
+  let btn = container.querySelector(".btn-eye");
+  btn.addEventListener("click", function() {
+    let input = container.querySelector("#senha");
+    if (input.getAttribute("type") === "text") {
+      input.setAttribute("type", "password");
+    } else {
+      input.setAttribute("type", "text");
+    }
+  });
   return container;
 };
 function errorsFirebase(error) {
@@ -7131,11 +7146,13 @@ const register = () => {
     const lastName = document.getElementById("lastName-user").value;
     const email = document.getElementById("email-user").value;
     const password = document.getElementById("register-password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
     return {
       name: name2,
       lastName,
       email,
-      password
+      password,
+      confirmPassword
     };
   }
   function printErrorMessage(message) {
@@ -7147,15 +7164,20 @@ const register = () => {
       name: name2,
       lastName,
       email,
-      password
+      password,
+      confirmPassword
     } = getInputValues();
     const validationErrors = validateRegister(name2, lastName, email, password);
     if (validationErrors.length > 0) {
       printErrorMessage(validationErrors);
       return;
     }
+    if (password !== confirmPassword) {
+      printErrorMessage("Senhas n\xE3o correspondem");
+      return;
+    }
     try {
-      await createUserWithEmail(name2, email, password, lastName);
+      await createUserWithEmail(name2, lastName, email, password);
       window.location.hash = "#timeline";
     } catch (error) {
       console.error("Erro ao registrar o usu\xE1rio:", error);
@@ -7164,37 +7186,41 @@ const register = () => {
     }
   }
   const registrationForm = document.createElement("div");
-  registrationForm.classList.add("register-container");
   const templateRegister = ` 
     <section class='form-register'>
-      <p class='title'>Cadastrar-se</p>
+      <h2 class='title'>Cadastrar-se</h2>
       <form class='register-form'>
         <div>
           <input type='text' class='inputs-register' id='name-user' placeholder='NOME'>
           <input type='text' class='inputs-register' id='lastName-user' placeholder='SOBRENOME'>
           <input type='text' class='inputs-register' id='email-user' placeholder='EMAIL'>
           <input type='password' class='inputs-register' id='register-password' placeholder='CRIAR SENHA'>
+          <input type='password' class='inputs-register' id='confirm-password' placeholder='CONFIRME SUA SENHA'>
+
         </div>
         <div>
           <button type='button' class='register-btn'>CADASTRAR</button>
         </div> 
         <p id='error-message' class='error-message'></p>
       </form>
-    </section>
-    <br>
     <nav>
-      <a class='btn-back' href='#login'><img src='./assets/arrow.png' id='arrow-img' alt='imagem de seta' width='50px'></a>
+      <a class='btn-back' href='#login'><img src='img/assets/arrow.png' id='arrow-img' alt='imagem de seta' width='50px'></a>
     </nav> 
+    </section>
+    <figure class='Image-register'>
+    <img src='img/assets/imageregister.png' id='img-register' alt='registerImage'>
+    </figure>
   `;
   registrationForm.innerHTML = templateRegister;
   registrationForm.querySelector(".register-btn").addEventListener("click", registerUser);
   return registrationForm;
 };
 const timeline = () => {
+  const userName = getUserName();
   const timeline2 = document.createElement("div");
   timeline2.innerHTML = `
 
-    <h1>Bem-vindo \xE0 linha do tempo!</h1>
+    <h1>Bem-vindo ${userName} \xE0 linha do tempo!</h1>
     <div class="input-container">
     <input type="text" class="input-mensagem" placeholder="COMPARTILHE UMA EXPERI\xCANCIA ...">
     <button class="botao-compartilhar">COMPARTILHAR</button>
