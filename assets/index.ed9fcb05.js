@@ -7015,7 +7015,7 @@ const login = () => {
     <section class='login-wrap'>
       <div class='left'>
         <figure class='logo-container'>
-          <img src='img/assets/logologin.png' id='logo' alt='Logo da ExploraA\xED'>
+          <img src='./assets/logologin.png' id='logo' alt='Logo da ExploraA\xED'>
         </figure>
         <h1 class="title1">ExplorA\xED</h1>
         <br>
@@ -7032,7 +7032,7 @@ const login = () => {
             <input type='text' class='inputs-info' placeholder='E-MAIL' id='email' />
             <input type='password' class='inputs-info' placeholder='SENHA' id='senha' />
             <button type="button" id="show-password" class="btn-eye">
-            <img src='img/assets/ojo.png' id='eye-img' alt='Logo do olho'>
+            <img src='./assets/ojo.png' id='eye-img' alt='Logo do olho'>
             </button> 
           </div>
           <nav>
@@ -7049,10 +7049,10 @@ const login = () => {
           </div>
           <figure>
             <button type='button' class='google-btn' id='google-btn'>
-              <img src='img/assets/icongoogle.png' id='google-img' alt='Logo do Google'>
+              <img src='./assets/icongoogle.png' id='google-img' alt='Logo do Google'>
             </button>
             <button type='button' class='facebook-btn' id='btn-facebook'>
-              <img src='img/assets/iconfacebook.png' id='facebook-img' alt='Logo do facebook'>
+              <img src='./assets/iconfacebook.png' id='facebook-img' alt='Logo do facebook'>
             </button>
           </figure>
         </form>
@@ -7204,11 +7204,11 @@ const register = () => {
         <p id='error-message' class='error-message'></p>
       </form>
     <nav>
-      <a class='btn-back' href='#login'><img src='img/assets/arrow.png' id='arrow-img' alt='imagem de seta' width='50px'></a>
+      <a class='btn-back' href='#login'><img src='./assets/arrow.png' id='arrow-img' alt='imagem de seta' width='50px'></a>
     </nav> 
     </section>
     <figure class='Image-register'>
-    <img src='img/assets/imageregister.png' id='img-register' alt='registerImage'>
+    <img src='./assets/imageregister.png' id='img-register' alt='registerImage'>
     </figure>
   `;
   registrationForm.innerHTML = templateRegister;
