@@ -77,7 +77,6 @@ footer {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
 } 
 
 
@@ -272,9 +271,20 @@ cursor: pointer;
     justify-content: center;
     display: grid;
     margin-top: 2em;
+    
+}
+
+body {
     text-align: center;
     justify-content: center;
+    color: var(--white);
+    box-sizing: border-box;
+    display: flex;
+    background-color: var(--blue);
+    height: fit-content;
+    
 }
+
 
 .inputs-register{
     margin-top: 2em;
@@ -324,8 +334,7 @@ position: relative;
     border: none;
     cursor: pointer; 
     transform: translateY(-160%);
-    background-color: white;
-   
+    background-color: white; 
 }
 
 .icons-eyes:hover {
@@ -339,7 +348,7 @@ position: relative;
         padding-top: 2.5rem;
         border-radius: 22px;
         width: 24em;
-        height: 32em;
+        height: 28em;
         background-color:var(--lightblue);
         margin-top: 4em;
 }
@@ -384,6 +393,13 @@ position: relative;
     font-size: 1em;
 }
 
+.profilePhoto {
+    width: 6em;
+    margin: 1em;
+    margin-top: 1em;
+    border-radius: 50%;
+}
+
 .img-timeline {
     position: absolute; 
     bottom: 0;
@@ -407,7 +423,6 @@ position: relative;
     flex-direction: column;
     width: 96%;
     padding: 1em;
-    background-color: var(--white);
     align-items: center;
     justify-content: center;
     border-radius: 0.8em;
@@ -415,12 +430,9 @@ position: relative;
     margin-right: auto;
     background-color: var(--lightblue);
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
-
-    
 }
 
-.input-message { /*input mensagem*/
+.input-message {
     min-height: 8em;
     border: none;
     text-align: center; 
@@ -432,12 +444,9 @@ position: relative;
     font-size: 0.6em;
     border-radius: 0.8em;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
-
-
 }
 
-.shareBtn { /* botão enviar*/
+.shareBtn {
     color: var(--white);
     background-color: var(--darkblue);
     width: 11em;
@@ -450,11 +459,6 @@ position: relative;
     font-size: 0.6em;
     text-shadow: -0.5px 0.5px 0 var(--black), 0.5px 0.5px 0 var(--black);
     font-family: 'Comfortaa', cursive;
-
-
-    
-
-
 }
 
 .post-container {
@@ -467,9 +471,6 @@ position: relative;
     margin-right: auto;
     font-size: 0.8em;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
-
-
   }
 
 .nameUser {
@@ -483,8 +484,6 @@ position: relative;
     background-image: linear-gradient(var(--darkblue), var(--blue));
     text-shadow: -1px 1px 0 var(--black), 1px 1px 0 var(--black);
     font-weight: bold;
-
-    
 }
 
 .dataPost {
@@ -504,8 +503,6 @@ position: relative;
    margin-bottom: 0.7em;
    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
    font-weight: bold;
-
-
 }
 
 .icon-timeline {
@@ -535,17 +532,17 @@ a {
 }
 
 @media screen and (min-width: 768px) {
-    ::-webkit-scrollbar{ /*customiza a barra de rolagem*/
+    ::-webkit-scrollbar{
         width: 0.5em;
     }
     
-    ::-webkit-scrollbar-track { /*customiza o caminho da barra de rolagem*/
+    ::-webkit-scrollbar-track {
         background-color: var(--lightblue) ;
         border: 0.1em solid var(--darkblue);
         border-radius: 0.3em;
     }
     
-    ::-webkit-scrollbar-thumb { /*barrinha que percorre o caminho sobe/desce*/
+    ::-webkit-scrollbar-thumb {
         background-color: var(--blue);
         border: 0.1em solid var(--darkblue);
         border-radius: 0.3em;
@@ -553,22 +550,15 @@ a {
         
     .container {
         display: grid;
-        grid-template-areas: "left right"; /*nomes das colunas aside e nav*/
-        grid-template-columns: 0.7fr 1.3fr;/*divide o grid em duas colunas com tamanhos iguais*/
-        grid-template-rows:  100vh; /*ViewHeightport - altura da tela*/
+        grid-template-areas: "left right";
+        grid-template-columns: 0.7fr 1.3fr;
+        grid-template-rows:  100vh;
         line-height: 1.5;
         font-size: 1.2em;     
         background-image: linear-gradient(to right, var(--darkblue), var(--blue));
 
 
     }
-    .photo-timeline {
-        width: 6em;
-        margin-top: 1em;
-        margin: 1em;
-        border-radius: 50%;
-    }
-
     .img-timeline {
         position: absolute;
         left: 50%;
@@ -590,7 +580,7 @@ a {
         text-align: center;
     }
     .icones {
-        margin-bottom: 15em;
+        margin-bottom: 5em;
 
     
     }
