@@ -31032,7 +31032,7 @@ const login = () => {
     <section class='login-wrap'>
       <div class='left'>
         <figure class='logo-container'>
-          <img src='./img/assets/logologin.png' class='logo' alt='Logo da ExploraA\xED'>
+          <img src='./assets/logologin.png' class='logo' alt='Logo da ExploraA\xED'>
         </figure>
         <h1 class='title'>ExplorA\xED!</h1>
         <br>
@@ -31205,11 +31205,11 @@ const register = () => {
         <p id='error-message' class='error-message'></p>
       </form>
     <nav>
-      <a class='btn-back' href='#login'><img src='./img/assets/arrow.png' alt='imagem de seta' width='50px'></a>
+      <a class='btn-back' href='#login'><img src='./assets/arrow.png' alt='imagem de seta' width='50px'></a>
     </nav> 
     </section>
     <figure class='image-register'>
-    <img src='./img/assets/imageregister.png' class='img-register' alt='registerImage'>
+    <img src='./assets/imageregister.png' class='img-register' alt='registerImage'>
     </figure>
   `;
   registrationForm.innerHTML = templateRegister;
@@ -31328,15 +31328,15 @@ const timeline = () => {
   const viewPost = `
   <div class="container">
     <div class='left-timeline'>
-      <img src='./img/assets/icon-photo.png' alt='Foto de perfil' class='profilePhoto'>
+      <img src='./assets/icon-photo.png' alt='Foto de perfil' class='profilePhoto'>
       <p class="postTitle">Ol\xE1 ${getUserName()}, bem-vindo(a) de volta!</p>
       <figure class='icones'>
-        <button type="button" class='button-timeline' id='home-btn'><img src="./img/assets/icon-home.png" class="icon-timeline" alt="Icone home">
-        <button type="button" class='button-timeline' id='logout-btn'><img src='./img/assets/icon-sair.png' class="icon-timeline" alt='logout icon'>
+        <button type="button" class='button-timeline' id='home-btn'><img src="./assets/icon-home.png" class="icon-timeline" alt="Icone home">
+        <button type="button" class='button-timeline' id='logout-btn'><img src='./assets/icon-sair.png' class="icon-timeline" alt='logout icon'>
       </figure>
       <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;">
     </div>
-    <img src="./img/assets/imagetimeline.png" class="img-timeline" alt="edit image" >
+    <img src="./assets/imagetimeline.png" class="img-timeline" alt="edit image" >
     <div class="right-timeline">
       <div class="input-container">
         <textarea class="input-message" id="postArea" placeholder="COMPARTILHE UMA EXPERI\xCANCIA..."></textarea>
@@ -31373,13 +31373,13 @@ const timeline = () => {
         <div class='image-icons'>
         <span class='likePost' id='likes-counter-${postId}'>${whoLiked.length}</span>
         <button type="button" class='icons' id='like-Post' data-post-id='${postId}'>
-        <a class='icons' id='likePost'><img src='./img/assets/likeicon.png' alt='like image' class='icons'></a>
+        <a class='icons' id='likePost'><img src='./assets/likeicon.png' alt='like image' class='icons'></a>
       </button>
       ${authorId === getUserId() ? `<button type="button" data-post-id='${postId}' class='icons' id='editPost'>
-      <a class='icons'><img src='./img/assets/editicon.png' alt='edit image' class='icons'></a>
+      <a class='icons'><img src='./assets/editicon.png' alt='edit image' class='icons'></a>
     </button>
     <button type="button" class='icons' id='btn-delete' data-post-id='${postId}'>
-    <img src='./img/assets/deleteicon.png' alt='delete image' class='icons'>
+    <img src='./assets/deleteicon.png' alt='delete image' class='icons'>
     </button>` : ""}
     </div>
   </div>
