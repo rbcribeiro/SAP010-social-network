@@ -26144,12 +26144,12 @@ function _generateNewEvent(auth, type, eventId = null) {
   };
 }
 function _savePartialEvent(auth, event) {
-  return storage$1()._set(persistenceKey(auth), event);
+  return storage()._set(persistenceKey(auth), event);
 }
 async function _getAndRemoveEvent(auth) {
-  const event = await storage$1()._get(persistenceKey(auth));
+  const event = await storage()._get(persistenceKey(auth));
   if (event) {
-    await storage$1()._remove(persistenceKey(auth));
+    await storage()._remove(persistenceKey(auth));
   }
   return event;
 }
@@ -26193,7 +26193,7 @@ function generateSessionId() {
   }
   return chars.join("");
 }
-function storage$1() {
+function storage() {
   return _getInstance(browserLocalPersistence);
 }
 function persistenceKey(auth) {
@@ -30295,16 +30295,6 @@ class Reference {
     }
   }
 }
-function uploadBytes$1(ref2, data, metadata) {
-  ref2._throwIfRoot("uploadBytes");
-  const requestInfo = multipartUpload(ref2.storage, ref2._location, getMappings(), new FbsBlob(data, true), metadata);
-  return ref2.storage.makeRequestWithTokens(requestInfo, newTextConnection).then((finalMetadata) => {
-    return {
-      metadata: finalMetadata,
-      ref: ref2
-    };
-  });
-}
 function uploadBytesResumable$1(ref2, data, metadata) {
   ref2._throwIfRoot("uploadBytesResumable");
   return new UploadTask(ref2, new FbsBlob(data), metadata);
@@ -30571,10 +30561,6 @@ const version$1 = "0.11.2";
  * limitations under the License.
  */
 const STORAGE_TYPE$1 = "storage";
-function uploadBytes(ref2, data, metadata) {
-  ref2 = getModularInstance(ref2);
-  return uploadBytes$1(ref2, data, metadata);
-}
 function uploadBytesResumable(ref2, data, metadata) {
   ref2 = getModularInstance(ref2);
   return uploadBytesResumable$1(ref2, data, metadata);
@@ -30609,18 +30595,6 @@ function ref(serviceOrRef, pathOrUrl) {
 }
 function _getChild(ref2, childPath) {
   return _getChild$1(ref2, childPath);
-}
-function getStorage(app2 = getApp(), bucketUrl) {
-  app2 = getModularInstance(app2);
-  const storageProvider = _getProvider(app2, STORAGE_TYPE$1);
-  const storageInstance = storageProvider.getImmediate({
-    identifier: bucketUrl
-  });
-  const emulator = getDefaultEmulatorHostnameAndPort("storage");
-  if (emulator) {
-    connectStorageEmulator(storageInstance, ...emulator);
-  }
-  return storageInstance;
 }
 function connectStorageEmulator(storage2, host, port, options = {}) {
   connectStorageEmulator$1(storage2, host, port, options);
@@ -31309,19 +31283,10 @@ const likePost = async (postId, userId) => {
       return "remove like";
     }
   } catch (error) {
-    console.error("Error al dar like:", error);
+    console.error("Error ao dar like:", error);
     throw error;
   }
   return "";
-};
-const storage = getStorage(app);
-const uploadProfilePhoto = (file) => {
-  const userId = firebase.auth().currentUser.uid;
-  const storageRef = ref(storage, `profilePhotos/${userId}/${file.name}`);
-  return uploadBytes(storageRef, file).then(() => getDownloadURL(storageRef)).catch((error) => {
-    console.log("Erro ao fazer upload da foto de perfil:", error);
-    throw error;
-  });
 };
 const timeline = () => {
   const timeline2 = document.createElement("div");
@@ -31331,10 +31296,9 @@ const timeline = () => {
       <img src='./assets/icon-photo.png' alt='Foto de perfil' class='profilePhoto'>
       <p class="postTitle">Ol\xE1 ${getUserName()}, bem-vindo(a) de volta!</p>
       <figure class='icones'>
-        <button type="button" class='button-timeline' id='home-btn'><img src="./assets/icon-home.png" class="icon-timeline" alt="Icone home">
-        <button type="button" class='button-timeline' id='logout-btn'><img src='./assets/icon-sair.png' class="icon-timeline" alt='logout icon'>
+        <button type="button" class='button-timeline' id='home-btn'><img src="./assets/icon-home.png" class="icon-timeline" alt="Icone home"></button>
+        <button type="button" class='button-timeline' id='logout-btn'><img src='./assets/icon-sair.png' class="icon-timeline" alt='logout icon'></button>
       </figure>
-      <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;">
     </div>
     <img src="./assets/imagetimeline.png" class="img-timeline" alt="edit image" >
     <div class="right-timeline">
@@ -31350,10 +31314,8 @@ const timeline = () => {
   const postBtn = timeline2.querySelector("#sharePost");
   const descriptionPost = timeline2.querySelector("#postArea");
   const postList = timeline2.querySelector("#postList");
-  const profilePhotoInput = timeline2.querySelector("#profilePhotoInput");
-  const profilePhoto = timeline2.querySelector(".profilePhoto");
   const logOutBtn = timeline2.querySelector("#logout-btn");
-  const createPostElement = (name2, createdAt, description, postId, authorId, whoLiked, profilePhotoUrl) => {
+  const createPostElement = (name2, createdAt, description, postId, authorId, whoLiked) => {
     const createdAtDate = new Date(createdAt.seconds * 1e3);
     const createdAtFormattedDate = createdAtDate.toLocaleDateString("pt-BR");
     const createdAtFormattedTime = createdAtDate.toLocaleTimeString("pt-BR", {
@@ -31370,11 +31332,10 @@ const timeline = () => {
           <p class='dataPost'>${createdAtFormatted}</p>
         </div>
         <p class='textPost'>${description}</p>
-        <div class='image-icons'>
-          <span class='likePost' id='likes-counter-${postId}'>${whoLiked.length}</span>
-          <button type="button" class='icons-post' id='like-Post' data-post-id='${postId}'>
-            <a class='icons-post' id='likePost'><img src='./assets/likeicon.png' alt='like image' class='icons-post'></a>
-          </button>
+          <div class='image-icons'>
+            <button type="button" class='icons-post' id='like-Post' data-post-id='${postId}'>
+              <a class='icons-post' id='icons-post'><img src='./assets/likeicon.png' alt='like image' class='icons-post'></a>
+            </button>
           ${authorId === getUserId() ? `<button type="button" data-post-id='${postId}' class='icons-post' id='editPost'>
             <a class='icons-post'><img src='./assets/editicon.png' alt='edit image' class='icons-post'></a>
           </button>
@@ -31382,12 +31343,9 @@ const timeline = () => {
             <img src='./assets/deleteicon.png' alt='delete image' class='icons-post'>
           </button>` : ""}
         </div>
+        <span class='likePost' id='likes-counter-${postId}'>${whoLiked.length}</span>
       </div>
 `;
-    if (profilePhotoUrl) {
-      const profilePhotoElement = postElement.querySelector(".profilePhoto");
-      profilePhotoElement.src = profilePhotoUrl;
-    }
     return postElement;
   };
   const loadPosts = async () => {
@@ -31400,8 +31358,7 @@ const timeline = () => {
         description,
         id: id2,
         author,
-        whoLiked,
-        profilePhotoUrl
+        whoLiked
       } = post;
       const postElement = createPostElement(
         name2,
@@ -31409,8 +31366,7 @@ const timeline = () => {
         description,
         id2,
         author,
-        whoLiked,
-        profilePhotoUrl
+        whoLiked
       );
       postList.appendChild(postElement);
       const likeButton = postElement.querySelector("#like-Post");
@@ -31431,17 +31387,6 @@ const timeline = () => {
         }
       });
     });
-  };
-  const handleProfilePhotoUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      uploadProfilePhoto(file).then((url) => {
-        profilePhoto.src = url;
-        localStorage.setItem("profilePhotoUrl", url);
-      }).catch((error) => {
-        console.log("Erro ao fazer upload da foto de perfil:", error);
-      });
-    }
   };
   const handlePostBtnClick = () => {
     const description = descriptionPost.value;
@@ -31486,16 +31431,10 @@ const timeline = () => {
       }
     }
   };
-  profilePhoto.addEventListener("click", () => {
-    profilePhotoInput.click();
-  });
-  profilePhotoInput.addEventListener("change", handleProfilePhotoUpload);
   postBtn.addEventListener("click", handlePostBtnClick);
+  postBtn.addEventListener("touchstart", handlePostBtnClick);
   postList.addEventListener("click", handlePostListClick);
-  const storedProfilePhotoUrl = localStorage.getItem("profilePhotoUrl");
-  if (storedProfilePhotoUrl) {
-    profilePhoto.src = storedProfilePhotoUrl;
-  }
+  postList.addEventListener("touchstart", handlePostListClick);
   logOutBtn.addEventListener("click", () => {
     logOut().then(() => {
       window.location.hash = "#login";
