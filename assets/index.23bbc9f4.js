@@ -6319,6 +6319,9 @@ function onIdTokenChanged(auth, nextOrObserver, error, completed) {
 function beforeAuthStateChanged(auth, callback, onAbort) {
   return getModularInstance(auth).beforeAuthStateChanged(callback, onAbort);
 }
+function signOut(auth) {
+  return getModularInstance(auth).signOut();
+}
 class MultiFactorSessionImpl {
   constructor(type, credential, auth) {
     this.type = type;
@@ -30980,6 +30983,10 @@ const loginFacebook = () => {
     return createUserDocument(user);
   });
 };
+const logOut = () => {
+  const auth = getAppAuth();
+  return signOut(auth);
+};
 function errorsFirebase(error) {
   switch (error) {
     case "auth/invalid-email":
@@ -31271,7 +31278,7 @@ const updatePost = async (postId, newText) => {
 const hasUserLikedPost = async (postId) => {
   const docRef = gh(db, "posts", postId);
   const docSnap = await af(docRef);
-  if (docSnap.exists()) {
+  if (docSnap.exists) {
     const post = docSnap.data();
     const { whoLiked } = post;
     const userId = getAppAuth().currentUser.uid;
@@ -31285,7 +31292,7 @@ const likePost = async (postId, userId) => {
     if (!userHasLikedPost) {
       const docRef = gh(db, "posts", postId);
       const postDoc = await af(docRef);
-      if (postDoc.exists()) {
+      if (postDoc.exists) {
         const post = postDoc.data();
         const { whoLiked } = post;
         if (!whoLiked.includes(userId)) {
@@ -31316,36 +31323,27 @@ const uploadProfilePhoto = (file) => {
     throw error;
   });
 };
-const delPost = (postId) => {
-  if (window.confirm("Tem certeza de que deseja excluir a publica\xE7\xE3o?")) {
-    deletePost(postId).then(() => {
-      alert("Publica\xE7\xE3o exclu\xEDda com sucesso!");
-    }).catch((error) => {
-      alert("Ocorreu um erro ao excluir o post. Por favor, tente novamente mais tarde", error);
-    });
-  }
-};
 const timeline = () => {
   const timeline2 = document.createElement("div");
   const viewPost = `
   <div class="container">
-  <div class='left-timeline'>
-    <img src='' alt='Foto de perfil' class='profilePhoto'>
-    <p class="postTitle">Ol\xE1 ${getUserName()}, bem-vindo(a) de volta!</p>
-    <figure class='icones'>
-          <a href="" class="icon-timeline"><img src="./assets/icon-home.png" class="icon-timeline" alt="Icone home"> Home </a>
-          <a href="" class="icon-timeline"><img src="./assets/icon-sair.png" class="icon-timeline" alt="Icone sair "> Sair </a>
-        </figure>
-        <img src="./assets/imagetimeline.png" class="img-timeline" alt="edit image" width="300px">
-        <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;">
+    <div class='left-timeline'>
+      <img src='./assets/icon-photo.png' alt='Foto de perfil' class='profilePhoto'>
+      <p class="postTitle">Ol\xE1 ${getUserName()}, bem-vindo(a) de volta!</p>
+      <figure class='icones'>
+        <button type="button" class='button-timeline' id='home-btn'><img src="./assets/icon-home.png" class="icon-timeline" alt="Icone home">
+        <button type="button" class='button-timeline' id='logout-btn'><img src='./assets/icon-sair.png' class="icon-timeline" alt='logout icon'>
+      </figure>
+      <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;">
+    </div>
+    <img src="./assets/imagetimeline.png" class="img-timeline" alt="edit image" >
+    <div class="right-timeline">
+      <div class="input-container">
+        <textarea class="input-message" id="postArea" placeholder="COMPARTILHE UMA EXPERI\xCANCIA..."></textarea>
+        <button class="shareBtn" id="sharePost">COMPARTILHAR</button>
       </div>
-      <div class="right-timeline">
-        <div class="input-container">
-          <textarea class="input-message" id="postArea" placeholder="COMPARTILHE UMA EXPERI\xCANCIA..."></textarea>
-          <button class="shareBtn" id="sharePost">COMPARTILHAR</button>
-        </div>
-        <div id="postList"></div>
-      </div>
+    <div id="postList"></div>
+  </div>
     </div>
   `;
   timeline2.innerHTML = viewPost;
@@ -31354,6 +31352,7 @@ const timeline = () => {
   const postList = timeline2.querySelector("#postList");
   const profilePhotoInput = timeline2.querySelector("#profilePhotoInput");
   const profilePhoto = timeline2.querySelector(".profilePhoto");
+  const logOutBtn = timeline2.querySelector("#logout-btn");
   const createPostElement = (name2, createdAt, description, postId, authorId, whoLiked, profilePhotoUrl) => {
     const createdAtDate = new Date(createdAt.seconds * 1e3);
     const createdAtFormattedDate = createdAtDate.toLocaleDateString("pt-BR");
@@ -31372,18 +31371,15 @@ const timeline = () => {
         </div>
         <p class='textPost'>${description}</p>
         <div class='image-icons'>
-
+        <span class='likePost' id='likes-counter-${postId}'>${whoLiked.length}</span>
         <button type="button" class='icons' id='like-Post' data-post-id='${postId}'>
-        <a class='icons' id='likePost'><img src='./assets/likeicon.png' alt='like image' width='30px'></a>
+        <a class='icons' id='likePost'><img src='./assets/likeicon.png' alt='like image' class='icons'></a>
       </button>
-      <span id='likes-counter-${postId}'>${whoLiked.length}</span>
-
-
       ${authorId === getUserId() ? `<button type="button" data-post-id='${postId}' class='icons' id='editPost'>
-      <a class='icons'><img src='./assets/editicon.png' alt='edit image' width='30px'></a>
+      <a class='icons'><img src='./assets/editicon.png' alt='edit image' class='icons'></a>
     </button>
     <button type="button" class='icons' id='btn-delete' data-post-id='${postId}'>
-    <img src='./assets/deleteicon.png' alt='delete image' width='30px'>
+    <img src='./assets/deleteicon.png' alt='delete image' class='icons'>
     </button>` : ""}
     </div>
   </div>
@@ -31467,8 +31463,14 @@ const timeline = () => {
     const editButton = target.closest("#editPost");
     if (deleteButton) {
       const postId = deleteButton.getAttribute("data-post-id");
-      delPost(postId);
-      loadPosts();
+      if (window.confirm("Tem certeza de que deseja excluir a publica\xE7\xE3o?")) {
+        deletePost(postId).then(() => {
+          target.closest(".post-container").remove();
+          alert("Publica\xE7\xE3o exclu\xEDda com sucesso!");
+        }).catch((error) => {
+          alert("Ocorreu um erro ao excluir o post. Por favor, tente novamente mais tarde", error);
+        });
+      }
     } else if (editButton) {
       const postId = editButton.getAttribute("data-post-id");
       const postElement = editButton.closest(".post-container");
@@ -31494,6 +31496,13 @@ const timeline = () => {
   if (storedProfilePhotoUrl) {
     profilePhoto.src = storedProfilePhotoUrl;
   }
+  logOutBtn.addEventListener("click", () => {
+    logOut().then(() => {
+      window.location.hash = "#login";
+    }).catch(() => {
+      alert("Ocorreu um erro, tente novamente.");
+    });
+  });
   loadPosts();
   return timeline2;
 };

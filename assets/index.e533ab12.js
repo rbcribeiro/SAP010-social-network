@@ -31032,7 +31032,7 @@ const login = () => {
     <section class='login-wrap'>
       <div class='left'>
         <figure class='logo-container'>
-          <img src='./assets/logologin.png' class='logo' alt='Logo da ExploraA\xED'>
+          <img src='ts/logologin.png' class='logo' alt='Logo da ExploraA\xED'>
         </figure>
         <h1 class='title'>ExplorA\xED!</h1>
         <br>
@@ -31068,10 +31068,10 @@ const login = () => {
           </div>
           <figure>
             <button type='button' class='google-button' id='google-button'>
-              <img src='img/assets/icongoogle.png' class='google-img' alt='Logo do Google'>
+              <img src='./assets/icongoogle.png' class='google-img' alt='Logo do Google'>
             </button>
             <button type='button' class='facebook-button' id='facebook-button'>
-              <img src='img/assets/iconfacebook.png' class='facebook-img' alt='Logo do facebook'>
+              <img src='./assets/iconfacebook.png' class='facebook-img' alt='Logo do facebook'>
             </button>
             <p id='errorLogar' class='error-message'></p>
           </figure>
