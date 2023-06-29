@@ -297,7 +297,7 @@ footer a:hover {
 
 
     .button-eye {
-        transform: translate(80px, 40px); 
+        transform: translate(85px, 40px); 
     }        
     .logo {
         width: 8em;
@@ -354,11 +354,11 @@ position: relative;
     position: absolute;
     border: none;
     cursor: pointer; 
-    transform: translate(-35px, -25px); 
+    transform: translate(100px, -25px); 
     background-color: rgba(255, 255, 255, 0);
 }
 
-.eye:hover {
+.icons-eye1:hover, .icons-eye2:hover {
     color: var(--blue);
 }
 
@@ -366,7 +366,7 @@ position: relative;
     position: absolute;
     border: none;
     cursor: pointer; 
-    transform: translate(100px, -25px); 
+    transform: translate(230px, -25px); 
     background-color: rgba(255, 255, 255, 0);
 }
 
@@ -411,11 +411,11 @@ position: relative;
     }
    
     .icon-eye1 {
-        transform: translate(-20px, -20px); 
+        transform: translate(80px, -20px); 
     }
     
     .icon-eye2 {
-        transform: translate(80px, -20px); 
+        transform: translate(180px, -20px); 
     }
 }@keyframes entering {
     from { 
