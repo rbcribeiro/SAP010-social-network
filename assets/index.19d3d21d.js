@@ -31263,16 +31263,18 @@ const createPost = (description) => {
     whoLiked: []
   });
 };
-const accessPost = async () => {
+const accessPost = (updateListPost) => {
   const allPosts = [];
   const postQuery = Rl(_h(db, "posts"), xl("createdAt", "desc"));
-  const querySnapshot = await df(postQuery);
-  querySnapshot.forEach((post) => {
-    const data = post.data();
-    data.id = post.id;
-    allPosts.push(data);
+  If(postQuery, (querySnapshot) => {
+    allPosts.length = 0;
+    querySnapshot.forEach((post) => {
+      const data = post.data();
+      data.id = post.id;
+      allPosts.push(data);
+    });
+    updateListPost(allPosts);
   });
-  return allPosts;
 };
 const deletePost = async (postId) => {
   const docRef = gh(db, "posts", postId);
@@ -31385,9 +31387,11 @@ const timeline = () => {
     return postElement;
   };
   const loadPosts = async () => {
+    await accessPost(updateListPost);
+  };
+  const updateListPost = (TodosPosts) => {
     postList.innerHTML = "";
-    const postsFirestore = await accessPost();
-    postsFirestore.forEach(async (post) => {
+    TodosPosts.forEach(async (post) => {
       const {
         name: name2,
         createdAt,
@@ -31431,7 +31435,6 @@ const timeline = () => {
     } else {
       createPost(description).then(() => {
         descriptionPost.value = "";
-        loadPosts();
         alert("Publica\xE7\xE3o efetuada com sucesso!");
       }).catch(() => {
         alert("Ocorreu um erro ao criar o post. Por favor, tente novamente mais tarde");
