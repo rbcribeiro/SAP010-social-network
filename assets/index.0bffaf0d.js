@@ -1567,7 +1567,7 @@ function isVersionServiceProvider(provider) {
   return (component === null || component === void 0 ? void 0 : component.type) === "VERSION";
 }
 const name$o = "@firebase/app";
-const version$1$1 = "0.9.12";
+const version$1$1 = "0.9.13";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -1609,7 +1609,7 @@ const name$3$1 = "@firebase/storage-compat";
 const name$2$1 = "@firebase/firestore";
 const name$1$1 = "@firebase/firestore-compat";
 const name$p = "firebase";
-const version$7 = "9.22.2";
+const version$7 = "9.23.0";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -2416,7 +2416,7 @@ const firebase$1 = createFirebaseNamespace();
  */
 const logger = new Logger("@firebase/app-compat");
 const name$6 = "@firebase/app-compat";
-const version$6 = "0.2.12";
+const version$6 = "0.2.13";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -2468,7 +2468,7 @@ if (isBrowser() && self.firebase !== void 0) {
 const firebase = firebase$1;
 registerCoreComponents();
 var name$5 = "firebase";
-var version$5 = "9.22.2";
+var version$5 = "9.23.0";
 /**
  * @license
  * Copyright 2020 Google LLC
@@ -13459,7 +13459,7 @@ V.UNAUTHENTICATED = new V(null), V.GOOGLE_CREDENTIALS = new V("google-credential
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-let S = "9.22.2";
+let S = "9.23.0";
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -27204,10 +27204,10 @@ function zf(t) {
     return s = Object.assign({
       useFetchStreams: e
     }, s), r2._setSettings(s), r2;
-  }, "PUBLIC").setMultipleInstances(true)), registerVersion(b, "3.12.2", t), registerVersion(b, "3.12.2", "esm2017");
+  }, "PUBLIC").setMultipleInstances(true)), registerVersion(b, "3.13.0", t), registerVersion(b, "3.13.0", "esm2017");
 }();
 const name$2 = "@firebase/firestore-compat";
-const version$2 = "0.3.11";
+const version$2 = "0.3.12";
 /**
  * @license
  * Copyright 2021 Google LLC
