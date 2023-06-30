@@ -1567,7 +1567,7 @@ function isVersionServiceProvider(provider) {
   return (component === null || component === void 0 ? void 0 : component.type) === "VERSION";
 }
 const name$o = "@firebase/app";
-const version$1$1 = "0.9.11";
+const version$1$1 = "0.9.12";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -1609,7 +1609,7 @@ const name$3$1 = "@firebase/storage-compat";
 const name$2$1 = "@firebase/firestore";
 const name$1$1 = "@firebase/firestore-compat";
 const name$p = "firebase";
-const version$7 = "9.22.1";
+const version$7 = "9.22.2";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -2416,7 +2416,7 @@ const firebase$1 = createFirebaseNamespace();
  */
 const logger = new Logger("@firebase/app-compat");
 const name$6 = "@firebase/app-compat";
-const version$6 = "0.2.11";
+const version$6 = "0.2.12";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -2468,7 +2468,7 @@ if (isBrowser() && self.firebase !== void 0) {
 const firebase = firebase$1;
 registerCoreComponents();
 var name$5 = "firebase";
-var version$5 = "9.22.1";
+var version$5 = "9.22.2";
 /**
  * @license
  * Copyright 2020 Google LLC
@@ -13459,7 +13459,7 @@ V.UNAUTHENTICATED = new V(null), V.GOOGLE_CREDENTIALS = new V("google-credential
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-let S = "9.22.1";
+let S = "9.22.2";
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -18969,20 +18969,22 @@ class Or {
     if (void 0 !== e && !this.en(e))
       return false;
     const n = dt(t);
-    let s = 0, i = 0;
-    for (; s < n.length && this.en(n[s]); ++s)
-      ;
-    if (s === n.length)
+    let s = /* @__PURE__ */ new Set(), i = 0, r2 = 0;
+    for (; i < n.length && this.en(n[i]); ++i)
+      s = s.add(n[i].fieldPath.canonicalString());
+    if (i === n.length)
       return true;
     if (void 0 !== this.Ze) {
-      const t2 = n[s];
-      if (!this.nn(this.Ze, t2) || !this.sn(this.Ye[i++], t2))
-        return false;
-      ++s;
+      if (!s.has(this.Ze.field.canonicalString())) {
+        const t2 = n[i];
+        if (!this.nn(this.Ze, t2) || !this.sn(this.Ye[r2++], t2))
+          return false;
+      }
+      ++i;
     }
-    for (; s < n.length; ++s) {
-      const t2 = n[s];
-      if (i >= this.Ye.length || !this.sn(this.Ye[i++], t2))
+    for (; i < n.length; ++i) {
+      const t2 = n[i];
+      if (r2 >= this.Ye.length || !this.sn(this.Ye[r2++], t2))
         return false;
     }
     return true;
@@ -25314,9 +25316,9 @@ class hh {
 }
 function lh(t, e, n, s = {}) {
   var i;
-  const r2 = (t = uh(t, hh))._getSettings();
-  if ("firestore.googleapis.com" !== r2.host && r2.host !== e && M("Host has been set in both settings() and useEmulator(), emulator host will be used"), t._setSettings(Object.assign(Object.assign({}, r2), {
-    host: `${e}:${n}`,
+  const r2 = (t = uh(t, hh))._getSettings(), o = `${e}:${n}`;
+  if ("firestore.googleapis.com" !== r2.host && r2.host !== o && M("Host has been set in both settings() and connectFirestoreEmulator(), emulator host will be used."), t._setSettings(Object.assign(Object.assign({}, r2), {
+    host: o,
     ssl: false
   })), s.mockUserToken) {
     let e2, n2;
@@ -27202,10 +27204,10 @@ function zf(t) {
     return s = Object.assign({
       useFetchStreams: e
     }, s), r2._setSettings(s), r2;
-  }, "PUBLIC").setMultipleInstances(true)), registerVersion(b, "3.12.1", t), registerVersion(b, "3.12.1", "esm2017");
+  }, "PUBLIC").setMultipleInstances(true)), registerVersion(b, "3.12.2", t), registerVersion(b, "3.12.2", "esm2017");
 }();
 const name$2 = "@firebase/firestore-compat";
-const version$2 = "0.3.10";
+const version$2 = "0.3.11";
 /**
  * @license
  * Copyright 2021 Google LLC
@@ -31183,43 +31185,41 @@ const register = () => {
   }
   const registrationForm = document.createElement("div");
   const templateRegister = ` 
-  <a class='btn-back' href='#login'><img src='./assets/arrow.png' class='btn-back' alt='imagem de seta'></a>
-
-    <div class='bloco'>
-      <section class='form-register'>
-        <h2 class='subtitle'>Cadastrar-se</h2>
-        <form class='register-form'>
+    <section class='form-register'>
+      <h2 class='subtitle'>Cadastrar-se</h2>
+      <form class='register-form'>
+        <div>
           <input type='text' class='inputs-register' id='name-user' placeholder='NOME'>
           <input type='text' class='inputs-register' id='lastName-user' placeholder='SOBRENOME'>
           <input type='text' class='inputs-register' id='email-user' placeholder='EMAIL'>
           <input type='password' class='inputs-register' id='register-password' placeholder='CRIAR SENHA'>
-          <button type='button' id='show-eye1' class='icon-eye1'>
-          <span class='icons-eye1'>
-            <span class='icon-container'><i class='fas fa-eye-slash'></i></span>
-          </span> 
-        </button>
+          <button type='button' id='show-eye' class='eye-eye'>
+            <span class='icons-eye'><i class='fas fa-eye-slash'></i></span> 
+            </button>
           <input type='password' class='inputs-register' id='confirm-password' placeholder='CONFIRME SUA SENHA'>
-          <button type='button' id='show-eye2' class='icon-eye2'>
-          <span class='icons-eye2'>
-            <span class='icon-container'><i class='fas fa-eye-slash'></i></span>
-          </span> 
-        </button>
+          <button type='button' id='show-eyes' class='eyes-eyes'>
+            <span class='icons-eyes'><i class='fas fa-eye-slash'></i></span> 
+            </button>
+
+        </div>
+        <div>
           <button type='button' id='register-button' class='submit'>CADASTRAR</button>
-          <p id='error-message' class='error-message'></p>
-        </form>
-      </section>
-    </div>
+        </div> 
+        <p id='error-message' class='error-message'></p>
+      </form>
+    <nav>
+      <a class='btn-back' href='#login'><img src='./assets/arrow.png' alt='imagem de seta' width='50px'></a>
+    </nav> 
+    </section>
     <figure class='image-register'>
-      <img src='./assets/imageregister.png' class='img-register' alt='registerImage'>
+    <img src='./assets/imageregister.png' class='img-register' alt='registerImage'>
     </figure>
   `;
   registrationForm.innerHTML = templateRegister;
   registrationForm.querySelector("#register-button").addEventListener("click", registerUser);
-  const button = registrationForm.querySelector(".icon-eye1");
-  button.addEventListener("click", (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const changeEye = button.querySelector("i");
+  const button = registrationForm.querySelector(".eye-eye");
+  button.addEventListener("click", () => {
+    const changeEye = registrationForm.querySelector("i");
     const input = registrationForm.querySelector("#register-password");
     if (input.getAttribute("type") === "text") {
       input.setAttribute("type", "password");
@@ -31231,11 +31231,9 @@ const register = () => {
       changeEye.classList.add("fa-eye");
     }
   });
-  const btnEye = registrationForm.querySelector("#show-eye2");
-  btnEye.addEventListener("click", (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const changeEye = btnEye.querySelector("i");
+  const btnEye = registrationForm.querySelector(".eyes-eyes");
+  btnEye.addEventListener("click", () => {
+    const changeEye = registrationForm.querySelector("i");
     const input = registrationForm.querySelector("#confirm-password");
     if (input.getAttribute("type") === "text") {
       input.setAttribute("type", "password");
@@ -31261,18 +31259,16 @@ const createPost = (description) => {
     whoLiked: []
   });
 };
-const accessPost = (updateListPost) => {
+const accessPost = async () => {
   const allPosts = [];
   const postQuery = Rl(_h(db, "posts"), xl("createdAt", "desc"));
-  If(postQuery, (querySnapshot) => {
-    allPosts.length = 0;
-    querySnapshot.forEach((post) => {
-      const data = post.data();
-      data.id = post.id;
-      allPosts.push(data);
-    });
-    updateListPost(allPosts);
+  const querySnapshot = await df(postQuery);
+  querySnapshot.forEach((post) => {
+    const data = post.data();
+    data.id = post.id;
+    allPosts.push(data);
   });
+  return allPosts;
 };
 const deletePost = async (postId) => {
   const docRef = gh(db, "posts", postId);
@@ -31385,11 +31381,9 @@ const timeline = () => {
     return postElement;
   };
   const loadPosts = async () => {
-    await accessPost(updateListPost);
-  };
-  const updateListPost = (TodosPosts) => {
     postList.innerHTML = "";
-    TodosPosts.forEach(async (post) => {
+    const postsFirestore = await accessPost();
+    postsFirestore.forEach(async (post) => {
       const {
         name: name2,
         createdAt,
@@ -31433,6 +31427,7 @@ const timeline = () => {
     } else {
       createPost(description).then(() => {
         descriptionPost.value = "";
+        loadPosts();
         alert("Publica\xE7\xE3o efetuada com sucesso!");
       }).catch(() => {
         alert("Ocorreu um erro ao criar o post. Por favor, tente novamente mais tarde");
