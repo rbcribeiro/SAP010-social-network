@@ -1567,7 +1567,7 @@ function isVersionServiceProvider(provider) {
   return (component === null || component === void 0 ? void 0 : component.type) === "VERSION";
 }
 const name$o = "@firebase/app";
-const version$1$1 = "0.9.11";
+const version$1$1 = "0.9.12";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -1609,7 +1609,7 @@ const name$3$1 = "@firebase/storage-compat";
 const name$2$1 = "@firebase/firestore";
 const name$1$1 = "@firebase/firestore-compat";
 const name$p = "firebase";
-const version$7 = "9.22.1";
+const version$7 = "9.22.2";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -2416,7 +2416,7 @@ const firebase$1 = createFirebaseNamespace();
  */
 const logger = new Logger("@firebase/app-compat");
 const name$6 = "@firebase/app-compat";
-const version$6 = "0.2.11";
+const version$6 = "0.2.12";
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -2468,7 +2468,7 @@ if (isBrowser() && self.firebase !== void 0) {
 const firebase = firebase$1;
 registerCoreComponents();
 var name$5 = "firebase";
-var version$5 = "9.22.1";
+var version$5 = "9.22.2";
 /**
  * @license
  * Copyright 2020 Google LLC
@@ -13459,7 +13459,7 @@ V.UNAUTHENTICATED = new V(null), V.GOOGLE_CREDENTIALS = new V("google-credential
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-let S = "9.22.1";
+let S = "9.22.2";
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -18969,20 +18969,22 @@ class Or {
     if (void 0 !== e && !this.en(e))
       return false;
     const n = dt(t);
-    let s = 0, i = 0;
-    for (; s < n.length && this.en(n[s]); ++s)
-      ;
-    if (s === n.length)
+    let s = /* @__PURE__ */ new Set(), i = 0, r2 = 0;
+    for (; i < n.length && this.en(n[i]); ++i)
+      s = s.add(n[i].fieldPath.canonicalString());
+    if (i === n.length)
       return true;
     if (void 0 !== this.Ze) {
-      const t2 = n[s];
-      if (!this.nn(this.Ze, t2) || !this.sn(this.Ye[i++], t2))
-        return false;
-      ++s;
+      if (!s.has(this.Ze.field.canonicalString())) {
+        const t2 = n[i];
+        if (!this.nn(this.Ze, t2) || !this.sn(this.Ye[r2++], t2))
+          return false;
+      }
+      ++i;
     }
-    for (; s < n.length; ++s) {
-      const t2 = n[s];
-      if (i >= this.Ye.length || !this.sn(this.Ye[i++], t2))
+    for (; i < n.length; ++i) {
+      const t2 = n[i];
+      if (r2 >= this.Ye.length || !this.sn(this.Ye[r2++], t2))
         return false;
     }
     return true;
@@ -25314,9 +25316,9 @@ class hh {
 }
 function lh(t, e, n, s = {}) {
   var i;
-  const r2 = (t = uh(t, hh))._getSettings();
-  if ("firestore.googleapis.com" !== r2.host && r2.host !== e && M("Host has been set in both settings() and useEmulator(), emulator host will be used"), t._setSettings(Object.assign(Object.assign({}, r2), {
-    host: `${e}:${n}`,
+  const r2 = (t = uh(t, hh))._getSettings(), o = `${e}:${n}`;
+  if ("firestore.googleapis.com" !== r2.host && r2.host !== o && M("Host has been set in both settings() and connectFirestoreEmulator(), emulator host will be used."), t._setSettings(Object.assign(Object.assign({}, r2), {
+    host: o,
     ssl: false
   })), s.mockUserToken) {
     let e2, n2;
@@ -27202,10 +27204,10 @@ function zf(t) {
     return s = Object.assign({
       useFetchStreams: e
     }, s), r2._setSettings(s), r2;
-  }, "PUBLIC").setMultipleInstances(true)), registerVersion(b, "3.12.1", t), registerVersion(b, "3.12.1", "esm2017");
+  }, "PUBLIC").setMultipleInstances(true)), registerVersion(b, "3.12.2", t), registerVersion(b, "3.12.2", "esm2017");
 }();
 const name$2 = "@firebase/firestore-compat";
-const version$2 = "0.3.10";
+const version$2 = "0.3.11";
 /**
  * @license
  * Copyright 2021 Google LLC
@@ -31015,14 +31017,13 @@ function validateRegister(name2, sobrenome, email, password) {
   }
   return "";
 }
-const logologin = "/assets/logologin.2c4b7caa.png";
 const login = () => {
   const container = document.createElement("div");
   const templateLogin = `
     <section class='login-wrap'>
       <div class='left'>
         <figure class='logo-container'>
-          <img src='${logologin}' class='logo' alt='Logo da ExploraA\xED'>
+          <img src='./assets/logologin.png' class='logo' alt='Logo da ExploraA\xED'>
         </figure>
         <h1 class='title'>ExplorA\xED!</h1>
         <br>
@@ -31264,10 +31265,7 @@ const createPost = (description) => {
 };
 const accessPost = (updateListPost) => {
   const allPosts = [];
-  const postQuery = Rl(
-    _h(db, "posts"),
-    xl("createdAt", "desc")
-  );
+  const postQuery = Rl(_h(db, "posts"), xl("createdAt", "desc"));
   If(postQuery, (querySnapshot) => {
     allPosts.length = 0;
     querySnapshot.forEach((post) => {
@@ -31388,6 +31386,9 @@ const timeline = () => {
 `;
     return postElement;
   };
+  const loadPosts = async () => {
+    await accessPost(updateListPost);
+  };
   const updateListPost = (TodosPosts) => {
     postList.innerHTML = "";
     TodosPosts.forEach(async (post) => {
@@ -31422,13 +31423,10 @@ const timeline = () => {
           }
           likesCounter.innerText = currentLikes;
         } catch (error) {
-          console.error("Error ao dar like:", error);
+          console.error("Error al dar like:", error);
         }
       });
     });
-  };
-  const loadPosts = async () => {
-    await accessPost(updateListPost);
   };
   const handlePostBtnClick = () => {
     const description = descriptionPost.value;
