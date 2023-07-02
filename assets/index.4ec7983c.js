@@ -882,7 +882,34 @@ function getModularInstance(service) {
     return service;
   }
 }
-class Component {
+class Component$7 {
+  constructor(name2, instanceFactory, type) {
+    this.name = name2;
+    this.instanceFactory = instanceFactory;
+    this.type = type;
+    this.multipleInstances = false;
+    this.serviceProps = {};
+    this.instantiationMode = "LAZY";
+    this.onInstanceCreated = null;
+  }
+  setInstantiationMode(mode) {
+    this.instantiationMode = mode;
+    return this;
+  }
+  setMultipleInstances(multipleInstances) {
+    this.multipleInstances = multipleInstances;
+    return this;
+  }
+  setServiceProps(props) {
+    this.serviceProps = props;
+    return this;
+  }
+  setInstanceCreatedCallback(callback) {
+    this.onInstanceCreated = callback;
+    return this;
+  }
+}
+class Component$6 {
   constructor(name2, instanceFactory, type) {
     this.name = name2;
     this.instanceFactory = instanceFactory;
@@ -1194,7 +1221,7 @@ class ComponentContainer {
  * limitations under the License.
  */
 const instances = [];
-var LogLevel;
+var LogLevel$3;
 (function(LogLevel2) {
   LogLevel2[LogLevel2["DEBUG"] = 0] = "DEBUG";
   LogLevel2[LogLevel2["VERBOSE"] = 1] = "VERBOSE";
@@ -1202,40 +1229,40 @@ var LogLevel;
   LogLevel2[LogLevel2["WARN"] = 3] = "WARN";
   LogLevel2[LogLevel2["ERROR"] = 4] = "ERROR";
   LogLevel2[LogLevel2["SILENT"] = 5] = "SILENT";
-})(LogLevel || (LogLevel = {}));
-const levelStringToEnum = {
-  "debug": LogLevel.DEBUG,
-  "verbose": LogLevel.VERBOSE,
-  "info": LogLevel.INFO,
-  "warn": LogLevel.WARN,
-  "error": LogLevel.ERROR,
-  "silent": LogLevel.SILENT
+})(LogLevel$3 || (LogLevel$3 = {}));
+const levelStringToEnum$3 = {
+  "debug": LogLevel$3.DEBUG,
+  "verbose": LogLevel$3.VERBOSE,
+  "info": LogLevel$3.INFO,
+  "warn": LogLevel$3.WARN,
+  "error": LogLevel$3.ERROR,
+  "silent": LogLevel$3.SILENT
 };
-const defaultLogLevel = LogLevel.INFO;
-const ConsoleMethod = {
-  [LogLevel.DEBUG]: "log",
-  [LogLevel.VERBOSE]: "log",
-  [LogLevel.INFO]: "info",
-  [LogLevel.WARN]: "warn",
-  [LogLevel.ERROR]: "error"
+const defaultLogLevel$3 = LogLevel$3.INFO;
+const ConsoleMethod$3 = {
+  [LogLevel$3.DEBUG]: "log",
+  [LogLevel$3.VERBOSE]: "log",
+  [LogLevel$3.INFO]: "info",
+  [LogLevel$3.WARN]: "warn",
+  [LogLevel$3.ERROR]: "error"
 };
-const defaultLogHandler = (instance, logType, ...args) => {
+const defaultLogHandler$3 = (instance, logType, ...args) => {
   if (logType < instance.logLevel) {
     return;
   }
   const now = new Date().toISOString();
-  const method = ConsoleMethod[logType];
+  const method = ConsoleMethod$3[logType];
   if (method) {
     console[method](`[${now}]  ${instance.name}:`, ...args);
   } else {
     throw new Error(`Attempted to log a message with an invalid logType (value: ${logType})`);
   }
 };
-class Logger {
+class Logger$3 {
   constructor(name2) {
     this.name = name2;
-    this._logLevel = defaultLogLevel;
-    this._logHandler = defaultLogHandler;
+    this._logLevel = defaultLogLevel$3;
+    this._logHandler = defaultLogHandler$3;
     this._userLogHandler = null;
     instances.push(this);
   }
@@ -1243,13 +1270,13 @@ class Logger {
     return this._logLevel;
   }
   set logLevel(val) {
-    if (!(val in LogLevel)) {
+    if (!(val in LogLevel$3)) {
       throw new TypeError(`Invalid value "${val}" assigned to \`logLevel\``);
     }
     this._logLevel = val;
   }
   setLogLevel(val) {
-    this._logLevel = typeof val === "string" ? levelStringToEnum[val] : val;
+    this._logLevel = typeof val === "string" ? levelStringToEnum$3[val] : val;
   }
   get logHandler() {
     return this._logHandler;
@@ -1267,24 +1294,24 @@ class Logger {
     this._userLogHandler = val;
   }
   debug(...args) {
-    this._userLogHandler && this._userLogHandler(this, LogLevel.DEBUG, ...args);
-    this._logHandler(this, LogLevel.DEBUG, ...args);
+    this._userLogHandler && this._userLogHandler(this, LogLevel$3.DEBUG, ...args);
+    this._logHandler(this, LogLevel$3.DEBUG, ...args);
   }
   log(...args) {
-    this._userLogHandler && this._userLogHandler(this, LogLevel.VERBOSE, ...args);
-    this._logHandler(this, LogLevel.VERBOSE, ...args);
+    this._userLogHandler && this._userLogHandler(this, LogLevel$3.VERBOSE, ...args);
+    this._logHandler(this, LogLevel$3.VERBOSE, ...args);
   }
   info(...args) {
-    this._userLogHandler && this._userLogHandler(this, LogLevel.INFO, ...args);
-    this._logHandler(this, LogLevel.INFO, ...args);
+    this._userLogHandler && this._userLogHandler(this, LogLevel$3.INFO, ...args);
+    this._logHandler(this, LogLevel$3.INFO, ...args);
   }
   warn(...args) {
-    this._userLogHandler && this._userLogHandler(this, LogLevel.WARN, ...args);
-    this._logHandler(this, LogLevel.WARN, ...args);
+    this._userLogHandler && this._userLogHandler(this, LogLevel$3.WARN, ...args);
+    this._logHandler(this, LogLevel$3.WARN, ...args);
   }
   error(...args) {
-    this._userLogHandler && this._userLogHandler(this, LogLevel.ERROR, ...args);
-    this._logHandler(this, LogLevel.ERROR, ...args);
+    this._userLogHandler && this._userLogHandler(this, LogLevel$3.ERROR, ...args);
+    this._logHandler(this, LogLevel$3.ERROR, ...args);
   }
 }
 function setLogLevel$2(level) {
@@ -1296,7 +1323,7 @@ function setUserLogHandler(logCallback, options) {
   for (const instance of instances) {
     let customLogLevel = null;
     if (options && options.level) {
-      customLogLevel = levelStringToEnum[options.level];
+      customLogLevel = levelStringToEnum$3[options.level];
     }
     if (logCallback === null) {
       instance.userLogHandler = null;
@@ -1321,7 +1348,7 @@ function setUserLogHandler(logCallback, options) {
         }).filter((arg) => arg).join(" ");
         if (level >= (customLogLevel !== null && customLogLevel !== void 0 ? customLogLevel : instance2.logLevel)) {
           logCallback({
-            level: LogLevel[level].toLowerCase(),
+            level: LogLevel$3[level].toLowerCase(),
             message,
             args,
             type: instance2.name
@@ -1584,7 +1611,7 @@ const version$1$1 = "0.9.12";
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const logger$1 = new Logger("@firebase/app");
+const logger$1 = new Logger$3("@firebase/app");
 const name$n = "@firebase/app-compat";
 const name$m = "@firebase/analytics-compat";
 const name$l = "@firebase/analytics";
@@ -1762,7 +1789,7 @@ class FirebaseAppImpl$1 {
     this._name = config.name;
     this._automaticDataCollectionEnabled = config.automaticDataCollectionEnabled;
     this._container = container;
-    this.container.addComponent(new Component("app", () => this, "PUBLIC"));
+    this.container.addComponent(new Component$6("app", () => this, "PUBLIC"));
   }
   get automaticDataCollectionEnabled() {
     this.checkDestroyed();
@@ -1894,7 +1921,7 @@ function registerVersion(libraryKeyOrName, version2, variant) {
     logger$1.warn(warning.join(" "));
     return;
   }
-  _registerComponent(new Component(`${library}-version`, () => ({ library, version: version2 }), "VERSION"));
+  _registerComponent(new Component$6(`${library}-version`, () => ({ library, version: version2 }), "VERSION"));
 }
 function onLog(logCallback, options) {
   if (logCallback !== null && typeof logCallback !== "function") {
@@ -2153,8 +2180,8 @@ function countBytes(heartbeatsCache) {
  * limitations under the License.
  */
 function registerCoreComponents$1(variant) {
-  _registerComponent(new Component("platform-logger", (container) => new PlatformLoggerServiceImpl(container), "PRIVATE"));
-  _registerComponent(new Component("heartbeat", (container) => new HeartbeatServiceImpl(container), "PRIVATE"));
+  _registerComponent(new Component$6("platform-logger", (container) => new PlatformLoggerServiceImpl(container), "PRIVATE"));
+  _registerComponent(new Component$6("heartbeat", (container) => new HeartbeatServiceImpl(container), "PRIVATE"));
   registerVersion(name$o, version$1$1, variant);
   registerVersion(name$o, version$1$1, "esm2017");
   registerVersion("fire-js", "");
@@ -2183,6 +2210,114 @@ const modularAPIs = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineP
 }, Symbol.toStringTag, { value: "Module" }));
 /**
  * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var LogLevel$2;
+(function(LogLevel2) {
+  LogLevel2[LogLevel2["DEBUG"] = 0] = "DEBUG";
+  LogLevel2[LogLevel2["VERBOSE"] = 1] = "VERBOSE";
+  LogLevel2[LogLevel2["INFO"] = 2] = "INFO";
+  LogLevel2[LogLevel2["WARN"] = 3] = "WARN";
+  LogLevel2[LogLevel2["ERROR"] = 4] = "ERROR";
+  LogLevel2[LogLevel2["SILENT"] = 5] = "SILENT";
+})(LogLevel$2 || (LogLevel$2 = {}));
+const levelStringToEnum$2 = {
+  "debug": LogLevel$2.DEBUG,
+  "verbose": LogLevel$2.VERBOSE,
+  "info": LogLevel$2.INFO,
+  "warn": LogLevel$2.WARN,
+  "error": LogLevel$2.ERROR,
+  "silent": LogLevel$2.SILENT
+};
+const defaultLogLevel$2 = LogLevel$2.INFO;
+const ConsoleMethod$2 = {
+  [LogLevel$2.DEBUG]: "log",
+  [LogLevel$2.VERBOSE]: "log",
+  [LogLevel$2.INFO]: "info",
+  [LogLevel$2.WARN]: "warn",
+  [LogLevel$2.ERROR]: "error"
+};
+const defaultLogHandler$2 = (instance, logType, ...args) => {
+  if (logType < instance.logLevel) {
+    return;
+  }
+  const now = new Date().toISOString();
+  const method = ConsoleMethod$2[logType];
+  if (method) {
+    console[method](`[${now}]  ${instance.name}:`, ...args);
+  } else {
+    throw new Error(`Attempted to log a message with an invalid logType (value: ${logType})`);
+  }
+};
+class Logger$2 {
+  constructor(name2) {
+    this.name = name2;
+    this._logLevel = defaultLogLevel$2;
+    this._logHandler = defaultLogHandler$2;
+    this._userLogHandler = null;
+  }
+  get logLevel() {
+    return this._logLevel;
+  }
+  set logLevel(val) {
+    if (!(val in LogLevel$2)) {
+      throw new TypeError(`Invalid value "${val}" assigned to \`logLevel\``);
+    }
+    this._logLevel = val;
+  }
+  setLogLevel(val) {
+    this._logLevel = typeof val === "string" ? levelStringToEnum$2[val] : val;
+  }
+  get logHandler() {
+    return this._logHandler;
+  }
+  set logHandler(val) {
+    if (typeof val !== "function") {
+      throw new TypeError("Value assigned to `logHandler` must be a function");
+    }
+    this._logHandler = val;
+  }
+  get userLogHandler() {
+    return this._userLogHandler;
+  }
+  set userLogHandler(val) {
+    this._userLogHandler = val;
+  }
+  debug(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel$2.DEBUG, ...args);
+    this._logHandler(this, LogLevel$2.DEBUG, ...args);
+  }
+  log(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel$2.VERBOSE, ...args);
+    this._logHandler(this, LogLevel$2.VERBOSE, ...args);
+  }
+  info(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel$2.INFO, ...args);
+    this._logHandler(this, LogLevel$2.INFO, ...args);
+  }
+  warn(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel$2.WARN, ...args);
+    this._logHandler(this, LogLevel$2.WARN, ...args);
+  }
+  error(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel$2.ERROR, ...args);
+    this._logHandler(this, LogLevel$2.ERROR, ...args);
+  }
+}
+/**
+ * @license
  * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -2201,7 +2336,7 @@ class FirebaseAppImpl {
   constructor(_delegate, firebase2) {
     this._delegate = _delegate;
     this.firebase = firebase2;
-    _addComponent(_delegate, new Component("app-compat", () => this, "PUBLIC"));
+    _addComponent(_delegate, new Component$7("app-compat", () => this, "PUBLIC"));
     this.container = _delegate.container;
   }
   get automaticDataCollectionEnabled() {
@@ -2414,7 +2549,7 @@ const firebase$1 = createFirebaseNamespace();
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const logger = new Logger("@firebase/app-compat");
+const logger = new Logger$2("@firebase/app-compat");
 const name$6 = "@firebase/app-compat";
 const version$6 = "0.2.12";
 /**
@@ -2497,6 +2632,141 @@ function __rest(s, e) {
         t[p2[i]] = s[p2[i]];
     }
   return t;
+}
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var LogLevel$1;
+(function(LogLevel2) {
+  LogLevel2[LogLevel2["DEBUG"] = 0] = "DEBUG";
+  LogLevel2[LogLevel2["VERBOSE"] = 1] = "VERBOSE";
+  LogLevel2[LogLevel2["INFO"] = 2] = "INFO";
+  LogLevel2[LogLevel2["WARN"] = 3] = "WARN";
+  LogLevel2[LogLevel2["ERROR"] = 4] = "ERROR";
+  LogLevel2[LogLevel2["SILENT"] = 5] = "SILENT";
+})(LogLevel$1 || (LogLevel$1 = {}));
+const levelStringToEnum$1 = {
+  "debug": LogLevel$1.DEBUG,
+  "verbose": LogLevel$1.VERBOSE,
+  "info": LogLevel$1.INFO,
+  "warn": LogLevel$1.WARN,
+  "error": LogLevel$1.ERROR,
+  "silent": LogLevel$1.SILENT
+};
+const defaultLogLevel$1 = LogLevel$1.INFO;
+const ConsoleMethod$1 = {
+  [LogLevel$1.DEBUG]: "log",
+  [LogLevel$1.VERBOSE]: "log",
+  [LogLevel$1.INFO]: "info",
+  [LogLevel$1.WARN]: "warn",
+  [LogLevel$1.ERROR]: "error"
+};
+const defaultLogHandler$1 = (instance, logType, ...args) => {
+  if (logType < instance.logLevel) {
+    return;
+  }
+  const now = new Date().toISOString();
+  const method = ConsoleMethod$1[logType];
+  if (method) {
+    console[method](`[${now}]  ${instance.name}:`, ...args);
+  } else {
+    throw new Error(`Attempted to log a message with an invalid logType (value: ${logType})`);
+  }
+};
+class Logger$1 {
+  constructor(name2) {
+    this.name = name2;
+    this._logLevel = defaultLogLevel$1;
+    this._logHandler = defaultLogHandler$1;
+    this._userLogHandler = null;
+  }
+  get logLevel() {
+    return this._logLevel;
+  }
+  set logLevel(val) {
+    if (!(val in LogLevel$1)) {
+      throw new TypeError(`Invalid value "${val}" assigned to \`logLevel\``);
+    }
+    this._logLevel = val;
+  }
+  setLogLevel(val) {
+    this._logLevel = typeof val === "string" ? levelStringToEnum$1[val] : val;
+  }
+  get logHandler() {
+    return this._logHandler;
+  }
+  set logHandler(val) {
+    if (typeof val !== "function") {
+      throw new TypeError("Value assigned to `logHandler` must be a function");
+    }
+    this._logHandler = val;
+  }
+  get userLogHandler() {
+    return this._userLogHandler;
+  }
+  set userLogHandler(val) {
+    this._userLogHandler = val;
+  }
+  debug(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel$1.DEBUG, ...args);
+    this._logHandler(this, LogLevel$1.DEBUG, ...args);
+  }
+  log(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel$1.VERBOSE, ...args);
+    this._logHandler(this, LogLevel$1.VERBOSE, ...args);
+  }
+  info(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel$1.INFO, ...args);
+    this._logHandler(this, LogLevel$1.INFO, ...args);
+  }
+  warn(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel$1.WARN, ...args);
+    this._logHandler(this, LogLevel$1.WARN, ...args);
+  }
+  error(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel$1.ERROR, ...args);
+    this._logHandler(this, LogLevel$1.ERROR, ...args);
+  }
+}
+class Component$5 {
+  constructor(name2, instanceFactory, type) {
+    this.name = name2;
+    this.instanceFactory = instanceFactory;
+    this.type = type;
+    this.multipleInstances = false;
+    this.serviceProps = {};
+    this.instantiationMode = "LAZY";
+    this.onInstanceCreated = null;
+  }
+  setInstantiationMode(mode) {
+    this.instantiationMode = mode;
+    return this;
+  }
+  setMultipleInstances(multipleInstances) {
+    this.multipleInstances = multipleInstances;
+    return this;
+  }
+  setServiceProps(props) {
+    this.serviceProps = props;
+    return this;
+  }
+  setInstanceCreatedCallback(callback) {
+    this.onInstanceCreated = callback;
+    return this;
+  }
 }
 const ProviderId = {
   FACEBOOK: "facebook.com",
@@ -2663,14 +2933,14 @@ const _DEFAULT_AUTH_ERROR_FACTORY = new ErrorFactory("auth", "Firebase", _prodEr
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const logClient = new Logger("@firebase/auth");
+const logClient = new Logger$1("@firebase/auth");
 function _logWarn(msg, ...args) {
-  if (logClient.logLevel <= LogLevel.WARN) {
+  if (logClient.logLevel <= LogLevel$1.WARN) {
     logClient.warn(`Auth (${SDK_VERSION}): ${msg}`, ...args);
   }
 }
 function _logError(msg, ...args) {
-  if (logClient.logLevel <= LogLevel.ERROR) {
+  if (logClient.logLevel <= LogLevel$1.ERROR) {
     logClient.error(`Auth (${SDK_VERSION}): ${msg}`, ...args);
   }
 }
@@ -9267,7 +9537,7 @@ function getVersionForPlatform(clientPlatform) {
   }
 }
 function registerAuth(clientPlatform) {
-  _registerComponent(new Component("auth", (container, { options: deps }) => {
+  _registerComponent(new Component$5("auth", (container, { options: deps }) => {
     const app2 = container.getProvider("app").getImmediate();
     const heartbeatServiceProvider = container.getProvider("heartbeat");
     const appCheckServiceProvider = container.getProvider("app-check-internal");
@@ -9289,7 +9559,7 @@ function registerAuth(clientPlatform) {
     const authInternalProvider = container.getProvider("auth-internal");
     authInternalProvider.initialize();
   }));
-  _registerComponent(new Component("auth-internal", (container) => {
+  _registerComponent(new Component$5("auth-internal", (container) => {
     const auth2 = _castAuth(container.getProvider("auth").getImmediate());
     return ((auth3) => new AuthInterop(auth3))(auth2);
   }, "PRIVATE").setInstantiationMode("EXPLICIT"));
@@ -9785,6 +10055,33 @@ function generateNoEvent() {
  */
 function addFrameworkForLogging(auth2, framework) {
   _castAuth(auth2)._logFramework(framework);
+}
+class Component$4 {
+  constructor(name2, instanceFactory, type) {
+    this.name = name2;
+    this.instanceFactory = instanceFactory;
+    this.type = type;
+    this.multipleInstances = false;
+    this.serviceProps = {};
+    this.instantiationMode = "LAZY";
+    this.onInstanceCreated = null;
+  }
+  setInstantiationMode(mode) {
+    this.instantiationMode = mode;
+    return this;
+  }
+  setMultipleInstances(multipleInstances) {
+    this.multipleInstances = multipleInstances;
+    return this;
+  }
+  setServiceProps(props) {
+    this.serviceProps = props;
+    return this;
+  }
+  setInstanceCreatedCallback(callback) {
+    this.onInstanceCreated = callback;
+    return this;
+  }
 }
 var name$3 = "@firebase/auth-compat";
 var version$3 = "0.4.2";
@@ -10609,7 +10906,7 @@ class RecaptchaVerifier {
  */
 const AUTH_TYPE = "auth-compat";
 function registerAuthCompat(instance) {
-  instance.INTERNAL.registerComponent(new Component(AUTH_TYPE, (container) => {
+  instance.INTERNAL.registerComponent(new Component$4(AUTH_TYPE, (container) => {
     const app2 = container.getProvider("app-compat").getImmediate();
     const authProvider = container.getProvider("auth");
     return new Auth(app2, authProvider);
@@ -10641,6 +10938,141 @@ function registerAuthCompat(instance) {
   instance.registerVersion(name$3, version$3);
 }
 registerAuthCompat(firebase);
+class Component$3 {
+  constructor(name2, instanceFactory, type) {
+    this.name = name2;
+    this.instanceFactory = instanceFactory;
+    this.type = type;
+    this.multipleInstances = false;
+    this.serviceProps = {};
+    this.instantiationMode = "LAZY";
+    this.onInstanceCreated = null;
+  }
+  setInstantiationMode(mode) {
+    this.instantiationMode = mode;
+    return this;
+  }
+  setMultipleInstances(multipleInstances) {
+    this.multipleInstances = multipleInstances;
+    return this;
+  }
+  setServiceProps(props) {
+    this.serviceProps = props;
+    return this;
+  }
+  setInstanceCreatedCallback(callback) {
+    this.onInstanceCreated = callback;
+    return this;
+  }
+}
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var LogLevel;
+(function(LogLevel2) {
+  LogLevel2[LogLevel2["DEBUG"] = 0] = "DEBUG";
+  LogLevel2[LogLevel2["VERBOSE"] = 1] = "VERBOSE";
+  LogLevel2[LogLevel2["INFO"] = 2] = "INFO";
+  LogLevel2[LogLevel2["WARN"] = 3] = "WARN";
+  LogLevel2[LogLevel2["ERROR"] = 4] = "ERROR";
+  LogLevel2[LogLevel2["SILENT"] = 5] = "SILENT";
+})(LogLevel || (LogLevel = {}));
+const levelStringToEnum = {
+  "debug": LogLevel.DEBUG,
+  "verbose": LogLevel.VERBOSE,
+  "info": LogLevel.INFO,
+  "warn": LogLevel.WARN,
+  "error": LogLevel.ERROR,
+  "silent": LogLevel.SILENT
+};
+const defaultLogLevel = LogLevel.INFO;
+const ConsoleMethod = {
+  [LogLevel.DEBUG]: "log",
+  [LogLevel.VERBOSE]: "log",
+  [LogLevel.INFO]: "info",
+  [LogLevel.WARN]: "warn",
+  [LogLevel.ERROR]: "error"
+};
+const defaultLogHandler = (instance, logType, ...args) => {
+  if (logType < instance.logLevel) {
+    return;
+  }
+  const now = new Date().toISOString();
+  const method = ConsoleMethod[logType];
+  if (method) {
+    console[method](`[${now}]  ${instance.name}:`, ...args);
+  } else {
+    throw new Error(`Attempted to log a message with an invalid logType (value: ${logType})`);
+  }
+};
+class Logger {
+  constructor(name2) {
+    this.name = name2;
+    this._logLevel = defaultLogLevel;
+    this._logHandler = defaultLogHandler;
+    this._userLogHandler = null;
+  }
+  get logLevel() {
+    return this._logLevel;
+  }
+  set logLevel(val) {
+    if (!(val in LogLevel)) {
+      throw new TypeError(`Invalid value "${val}" assigned to \`logLevel\``);
+    }
+    this._logLevel = val;
+  }
+  setLogLevel(val) {
+    this._logLevel = typeof val === "string" ? levelStringToEnum[val] : val;
+  }
+  get logHandler() {
+    return this._logHandler;
+  }
+  set logHandler(val) {
+    if (typeof val !== "function") {
+      throw new TypeError("Value assigned to `logHandler` must be a function");
+    }
+    this._logHandler = val;
+  }
+  get userLogHandler() {
+    return this._userLogHandler;
+  }
+  set userLogHandler(val) {
+    this._userLogHandler = val;
+  }
+  debug(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel.DEBUG, ...args);
+    this._logHandler(this, LogLevel.DEBUG, ...args);
+  }
+  log(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel.VERBOSE, ...args);
+    this._logHandler(this, LogLevel.VERBOSE, ...args);
+  }
+  info(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel.INFO, ...args);
+    this._logHandler(this, LogLevel.INFO, ...args);
+  }
+  warn(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel.WARN, ...args);
+    this._logHandler(this, LogLevel.WARN, ...args);
+  }
+  error(...args) {
+    this._userLogHandler && this._userLogHandler(this, LogLevel.ERROR, ...args);
+    this._logHandler(this, LogLevel.ERROR, ...args);
+  }
+}
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 var k$1, goog = goog || {}, l = commonjsGlobal || self;
 function aa$1(a) {
@@ -27195,7 +27627,7 @@ function zf(t) {
 !function(t, e = true) {
   !function(t2) {
     S = t2;
-  }(SDK_VERSION), _registerComponent(new Component("firestore", (t2, { instanceIdentifier: n, options: s }) => {
+  }(SDK_VERSION), _registerComponent(new Component$3("firestore", (t2, { instanceIdentifier: n, options: s }) => {
     const i = t2.getProvider("app").getImmediate(), r2 = new vh(new z(t2.getProvider("auth-internal")), new Y(t2.getProvider("app-check-internal")), function(t3, e2) {
       if (!Object.prototype.hasOwnProperty.apply(t3.options, ["projectId"]))
         throw new U(q.INVALID_ARGUMENT, '"projectId" not provided in firebase.initializeApp.');
@@ -27206,6 +27638,33 @@ function zf(t) {
     }, s), r2._setSettings(s), r2;
   }, "PUBLIC").setMultipleInstances(true)), registerVersion(b, "3.12.2", t), registerVersion(b, "3.12.2", "esm2017");
 }();
+class Component$2 {
+  constructor(name2, instanceFactory, type) {
+    this.name = name2;
+    this.instanceFactory = instanceFactory;
+    this.type = type;
+    this.multipleInstances = false;
+    this.serviceProps = {};
+    this.instantiationMode = "LAZY";
+    this.onInstanceCreated = null;
+  }
+  setInstantiationMode(mode) {
+    this.instantiationMode = mode;
+    return this;
+  }
+  setMultipleInstances(multipleInstances) {
+    this.multipleInstances = multipleInstances;
+    return this;
+  }
+  setServiceProps(props) {
+    this.serviceProps = props;
+    return this;
+  }
+  setInstanceCreatedCallback(callback) {
+    this.onInstanceCreated = callback;
+    return this;
+  }
+}
 const name$2 = "@firebase/firestore-compat";
 const version$2 = "0.3.11";
 /**
@@ -28028,7 +28487,7 @@ const firestoreNamespace = {
   CACHE_SIZE_UNLIMITED: Ah
 };
 function configureForFirebase(firebase2, firestoreFactory) {
-  firebase2.INTERNAL.registerComponent(new Component("firestore-compat", (container) => {
+  firebase2.INTERNAL.registerComponent(new Component$2("firestore-compat", (container) => {
     const app2 = container.getProvider("app-compat").getImmediate();
     const firestoreExp = container.getProvider("firestore").getImmediate();
     return firestoreFactory(app2, firestoreExp);
@@ -28055,6 +28514,33 @@ function registerFirestore(instance) {
   instance.registerVersion(name$2, version$2);
 }
 registerFirestore(firebase);
+class Component$1 {
+  constructor(name2, instanceFactory, type) {
+    this.name = name2;
+    this.instanceFactory = instanceFactory;
+    this.type = type;
+    this.multipleInstances = false;
+    this.serviceProps = {};
+    this.instantiationMode = "LAZY";
+    this.onInstanceCreated = null;
+  }
+  setInstantiationMode(mode) {
+    this.instantiationMode = mode;
+    return this;
+  }
+  setMultipleInstances(multipleInstances) {
+    this.multipleInstances = multipleInstances;
+    return this;
+  }
+  setServiceProps(props) {
+    this.serviceProps = props;
+    return this;
+  }
+  setInstanceCreatedCallback(callback) {
+    this.onInstanceCreated = callback;
+    return this;
+  }
+}
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -30609,11 +31095,38 @@ function factory$1(container, { instanceIdentifier: url }) {
   return new FirebaseStorageImpl(app2, authProvider, appCheckProvider, url, SDK_VERSION);
 }
 function registerStorage$1() {
-  _registerComponent(new Component(STORAGE_TYPE$1, factory$1, "PUBLIC").setMultipleInstances(true));
+  _registerComponent(new Component$1(STORAGE_TYPE$1, factory$1, "PUBLIC").setMultipleInstances(true));
   registerVersion(name$1, version$1, "");
   registerVersion(name$1, version$1, "esm2017");
 }
 registerStorage$1();
+class Component {
+  constructor(name2, instanceFactory, type) {
+    this.name = name2;
+    this.instanceFactory = instanceFactory;
+    this.type = type;
+    this.multipleInstances = false;
+    this.serviceProps = {};
+    this.instantiationMode = "LAZY";
+    this.onInstanceCreated = null;
+  }
+  setInstantiationMode(mode) {
+    this.instantiationMode = mode;
+    return this;
+  }
+  setMultipleInstances(multipleInstances) {
+    this.multipleInstances = multipleInstances;
+    return this;
+  }
+  setServiceProps(props) {
+    this.serviceProps = props;
+    return this;
+  }
+  setInstanceCreatedCallback(callback) {
+    this.onInstanceCreated = callback;
+    return this;
+  }
+}
 /**
  * @license
  * Copyright 2020 Google LLC
@@ -31017,13 +31530,16 @@ function validateRegister(name2, sobrenome, email, password) {
   }
   return "";
 }
+const logologin = "/assets/logologin.2c4b7caa.png";
+const googleicon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADk0lEQVR4nO2aS4hcVRCGbwaNEFEjKEFFfMUEdPpWdVrEFwSFxI0rRVFQo7gQ3y5EQYRBBcGliDCDMX2r7swoWWQTxJVEAipGo4giImoQNKgjuJIEE/3kNIPYM9Ppc7pvz+2AP5zlrfr/Oo+qU+dm2f84MaTN+sYcZ2fjjit3caEaO9TYpc5H6vyuDv8dYiyI8aE6003jnsl5NtRKeuMrnKbOA2rsV+PvpYT7DTGOq/Fu07lz6z5OWTXirRlOFeNJMQ6nku4pxvlBnPuzKSZGSl7aXK/Ol1UR16XDONiYpVE98ykmtORZMY6NjLz/O46K82hl3K/YzVox3lwF4iwZ00PvjUXy79RAnnAw5MYtwy0b5626yDeNx4aKvjpTdZFX5/HhyBtbO+f0yRj5jSFBGV8PSkCcj8V5Xp171dkmBdul4G41Xlbn055JzyogHyDOM6nEw2yJsVPaXNzPfrMgF2O+S0hV5FszrBPn18Sof6eOpPrSMDshm1dFPkCcRxIj/35rjnMG9Tc5zwYtuasS8osCPkmI/Pf6Budm44Lc2BQdeefP3JnMxglqPJwg4LVs3KCRWTecOM15zu9rENaoMVP1kF6FnhpfRK79/VERCQJGkOzE+KZX3XM0cvk8XbOAY6HI7PJ1dcmZsQZy49Y6BahDY45Lu3xJwQWxH28puaZuAbo0caYIaBrXjoGA67p8tXZzVrQA57a6BeRGs9vZFBPiHIn5OBR7YyBg0zJ/0d2Gmo9Rddi8kzOGSmRhz9QmwPh5RX/qPJRgaDpmEtS5PWZIwYPR3T1j38rO5rg8JZmEi0mMiCih1rmtxfl2XuhpSIwDCbNwqIpyumlcFarbaAEFN1ZSkS5G44NhRLQKLlPnx4SZX1hWRnQZnGGdGr8kbqxDjZItqeRz4wYxfkrcwK/2NazOUwOcDn+p0c6dS/rZb85yUacstsQ+a+h4tNG4dqLz1cBNKeOgGi92Hjycbblzk5TcEVot4rzXETuIbWdP6vSuRieayLV/PPkKK85zYyTgpSwZsEacom7y6nx2wpMnYj+8XWPkDy+7vAzyJqbGbA3kF6rL9qEwK3kiJWMORd75tlGyOasa4TopzucjFWC0wwN5NiqEd6vQm0kpASKXzIGQN7LVQnhHEOe+YZKTOH+EVntu3JzViVbJeeH3ATFeD78TiPPbCmSPLGb4vSFTS8H23Dk9G2eEZsFJ8bNHVhP+AeCmXn9W+cClAAAAAElFTkSuQmCC";
+const facebookicon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABPUlEQVR4nO2ZTU4CQRCF50RMRRMvAcbruEcTNxyiauKSIyhGF7qAC7hmAStFWOACnxmZGEX86Wac7k7el7zlJO9VVf+kJ8sIISRqRHGUG65EsRADGpFiIYpBy3C4q/mzxkzbduWKU+/KhzYvlVqKjnOAt7GJwLysdenTgXkExlHpyT1AeNP4KAaQGqq4XwDdW2A4AR6XwAs+E3UH9grgZrzhOKUAJ3f4FYk5wGiaeIDZ81fDx9fAwfnfvg8eYLW5YrFeF2KJBHAdGWEA+5+qf8fDMsIOuDCaJh6gf594gN4wwgDchYwdAEdIeBKDuxC4jdr2w0t4G/0BnsQW+iqh9T4t7hIgV8x8AgzqHiNvKS6cA5Q/F4Ibt6oDBdqZD+XPhdDmRdH1Mv/eCUWnfJ9v9LldMS/HxrvyhBCSNcUrfADRIPCSTBgAAAAASUVORK5CYII=";
 const login = () => {
   const container = document.createElement("div");
   const templateLogin = `
     <section class='login-wrap'>
       <div class='left'>
         <figure class='logo-container'>
-          <img src='./assets/logologin.png' class='logo' alt='Logo da ExploraA\xED'>
+          <img src= ${logologin} class='logo' alt='Logo da ExploraA\xED'>
         </figure>
         <h1 class='title'>ExplorA\xED!</h1>
         <br>
@@ -31060,10 +31576,10 @@ const login = () => {
           </div>
           <figure>
             <button type='button' class='google-button' id='google-button'>
-              <img src='./assets/icongoogle.png' class='google-img' alt='Logo do Google'>
+              <img src= '${googleicon}' class='google-img' alt='Logo do Google'>
             </button>
             <button type='button' class='facebook-button' id='facebook-button'>
-              <img src='./assets/iconfacebook.png' class='facebook-img' alt='Logo do facebook'>
+              <img src='${facebookicon}' class='facebook-img' alt='Logo do facebook'>
             </button>
             <p id='errorLogar' class='error-message'></p>
           </figure>
@@ -31138,6 +31654,8 @@ const login = () => {
   });
   return container;
 };
+const arrow = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABpUlEQVR4nO2WvU5CQRCFv14pMf6AMYLCwyixJbwBAhaK72FJ1MYKQYONP7WWUEkBxqcQbESI5ibnJhvivXe5oKHwJFOwnJmzOzs7c+Efc4h1oAg8AF3gXdbVWgGIz1JwDagAQ+ArwEZADdiYVnQP6CvoB1AFskAKWJCltHYpjsPtAZmwogc6gRPoCti08EkA18bpS2FOOlJ6D0Ns+kj+o0lOHjPSG0bURdlI+6qNw7mR3mnRUKxTmyczVJF43ekS0AKeLISTijVUJj1R1A6rPqJtcZrYoSb+vh/pXqRsgGhbv22Qk8+tH+lVpK2x9SjwrP86wDL2SMnP6XCe6IkUGVtvWXQt18bvPmJU968KP4YRfhFpOyDVK9gjbfjNX3EVRHIa/qyeU138vB8pbjSQhI9484e79GogA+AzqIE4ONMOnSkzLW4Uq2I7+N3qdqZMWBwrxtskxZgxxlo5pKjrvzupc8n4EGjovoKQNNI7Uu8PhYyR9oEafk5vc1GW1lpdHDe9O0yJKHCiyrT52LuYsMEEIqbRdqcu1Jd11BzyNk/mH/w1vgGuqrP60R8g2QAAAABJRU5ErkJggg==";
+const imageregister = "/assets/imageregister.aacb5e07.png";
 const register = () => {
   function getInputValues() {
     const name2 = document.getElementById("name-user").value;
@@ -31185,7 +31703,7 @@ const register = () => {
   }
   const registrationForm = document.createElement("div");
   const templateRegister = ` 
-  <a class='btn-back' href='#login'><img src='./assets/arrow.png' class='btn-back' alt='imagem de seta'></a>
+  <<a class='btn-back' href='#login'><img src='${arrow}' class='btn-back' alt='imagem de seta'></a>
 
     <div class='bloco'>
       <section class='form-register'>
@@ -31212,7 +31730,7 @@ const register = () => {
       </section>
     </div>
     <figure class='image-register'>
-      <img src='./assets/imageregister.png' class='img-register' alt='registerImage'>
+      <img src='${imageregister}' class='img-register' alt='registerImage'>
     </figure>
   `;
   registrationForm.innerHTML = templateRegister;
@@ -31265,7 +31783,10 @@ const createPost = (description) => {
 };
 const accessPost = (updateListPost) => {
   const allPosts = [];
-  const postQuery = Rl(_h(db, "posts"), xl("createdAt", "desc"));
+  const postQuery = Rl(
+    _h(db, "posts"),
+    xl("createdAt", "desc")
+  );
   If(postQuery, (querySnapshot) => {
     allPosts.length = 0;
     querySnapshot.forEach((post) => {
@@ -31326,19 +31847,26 @@ const likePost = async (postId, userId) => {
   }
   return "";
 };
+const photoicon = "data:image/png;base64,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";
+const homeicon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABnUlEQVR4nO2WzSsFURjGfyRSvlIsZGHHRtnYKQul7OzYsbK240+wtbS1UkpKllIXKZGVjWxsJFKU7sLXq6lzbtPp3u7MNXfOmbxPPTU1zTnv733nPDOgSqQR4Ng4ui6k5oAXQIxfgXkKpBZgDfiOQVj/ABtAK4GrB9irAuD6EOgnUE0AdwkgrO+BSWcNqeHctASUU0BYl82zVqvAhw+QDmCzAQDX20CnWXMKeMgTZBg4zwDC+ioW0QPAUR4g08BjhhDWz8Cs2aPNJFyUdE2L1q8mQFhHa6+bvSItZA3RDew2EcD1AdCXNcQYcJMjhBjfAuNZQSwC7x4gJBbRy38BsIdNAvEW0J4WYtCJv1B8Cgwlhaj2QQrJT8BMPYiVGr8IofnTfAZsRFfUBewEUKCk9D7QGwe5MDfeAihOEtrWGtVe0RlwDYwGUKAkdFTrJVCqdU6kIK4r3wWKgjjy3WnRiTjy3WnRiTjy3WkJYSJppSD47pJOBD0j6KuVQppa+O6STgRNLfTVSiFNLXx3SSfCP06tkwKAlBrYS6WiAf0C5nGBCW1kgjgAAAAASUVORK5CYII=";
+const exiticon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABB0lEQVR4nO2ZQQrCMBBF3znatat6HMWF3sNtj6OLnqwIttsWRoQIUpqqCUkTmQfZJv91kjCkoCiKkjIboAF6QCKPHrgCpU/42wrBZTJaV4kmgfBixsVFYI1tI5ZxdxGYThIb8V1fBTwRrQDhz0CVcwVqYAROOQrUb/OOFolkBbbAMJl7AA45VWA3IzFOKpG0wDcSkrrAkyWJLAQwe3/uTEQXCN3Q/YwKoBVAD7EEvoX2lmv0mMM1uhSe1AU+hU9a4C+aufPCl89C4CUxWsKTSy9UhVw/VjNnQwVEK+CH+H7ALkKPLyEfd68JBBef5/XS/FxYO3wLFDhSGPs1tlNn1nYOryiKQnAeoESCUe7kF5MAAAAASUVORK5CYII=";
+const imagetimeline = "/assets/imagetimeline.1284dcfe.png";
+const likeicon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACQElEQVR4nO2Zy0odQRCGPz2CRAhEJYuou0jAEHcmSshTBJE8iUYXXvAGWSlRsso2G2MQfYtk5cEX0LhQ43GpRzctDSXIEDldfZkZYX74YTgzU/VXT3dVdR+oUKFCDLQDY8AMsA0cABfAjfBCfvsJTAOj8k7hGABWgWPAKPkXWAH6ixDeC3wDrj2EZ9kENoGevMR/As4jCM/yHzCRUniHjLpJzA3xFRVPgL0cxBvhrviMghrwK0fxRrgX60vkMW3MA/waY8GagjnuK75HMkPRAZxL2n5UU8eETqWBSEUqFpvair1aAtEmw2VX8bbJOiqBYJPhsaT0lhjzMH4FzAODUoBeA1+AS6G9HpJ79pkFecco+c4lgBkP8e8fsPVS+D98kLmt8TXlEsC20qgdeV8sKH1tuRg9UBq1U8IXr5S+6i5GG0qjXQEBPFX6soW1JbT53y5YXwwrfTVTBDAbEMB8igAaHr3Kcw/x9p1GiimkXcRG9gttCvH22R0PP/UUafSONiW6YtHTx1aKQnafcw72pwLsT7oEMBrgoNWX0C5ak+FIXs3cj0x96AS+B9o81JzmrQQ6s/wDvBH+jmBvCeWGRttopWQT6EOJzRIIN8J1PDf1ZyUQfwp044mJEgTwkUBsFCh+jQioBVTnUhwtInvZ3RzF78Q83L1Dhxww5ZFxaiTEuGSG2MJPYixYV3TL14hR7K5k1J9RAPrkxOzIs7dZAl5QArTLodNn6dnrstu6Ftrrfbln2+m3ZfmbtUIFHjluARLsRAYED/z7AAAAAElFTkSuQmCC";
+const editicon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABqklEQVR4nO2YvUoDQRRGDyLYWVjYBqOgFjZWgkZ9ABEVK0V9CME30KSysdTYGm2TbgsbEfEBfAixUqPg38jADQwhS5LZSWZX54NbJDCz58ze2cwGQkL+RYaBSTKaAvAEKOCYjGUGeBX4Rk2ToQwCFQO+DoySgSwDZRHQdQl8AptJJs0DJaAGRI5ry7jOktE2FUNC7wXrbADvTb3oqk6BgRbwjbogYfI9hD9rA/8F7CQVKGUZHun5zMIjm8wlfNmAXwCeW8Dv4jBRj+AXY1behC+kSeC8y5Xfl2unQsCEn+8QXqVFoB38dwx8KgQ6gd+LgfcukBRe+RS4MuD1k+SlTc8fxMzjRUDDjRtPG1t45UtArz5yBx4s2kb5FpiTcesJ4ZUPgVtj3I3x/SOw3WHbKJ8CRRkzJZ/v5FA2ZAGvfAjoN6hG/080zTNicTSP+i3wAaw0jZ+VQ9xbl/DK1yb+Aa6BE+DeAlr5FnBZURAg3AFCC/HfN3HNo0DVhUDRo8ChC4Exy1/RpFUHcjjKWp8l6sAqjpOTdqr24O/1SErPfeRy5UNCQkJC/nZ+AWGKb+fgtvPOAAAAAElFTkSuQmCC";
+const deleteicon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABUElEQVR4nO2YPU7DQBSEBzpOEE4QV5ACgXKAuEyaAAcIJ4CODi6Qn5ImqVwmuQCcgNQpoEuqUOICKhtZekUaFEvZmcVoP2k6y/s+rWztLBAIBFg0AKwtJ6ggIwC5ZYg/xKkN97Qjyy2BZYnnR/ZuOuutwVxnxRj4HkBKHDr/JamtvRcHnobPLZ8udiDxKJC4ECh2IQJwJk5kawf+Bc0S/3HXaboUiD18wC2XApEHgbpLgSMAmXD4zNZ0yodQYAMCC6HAK0NgJhSYMgSGQoEBQ+BOKHDLELgUCnQZAhdCgXOGwLFQoMYQKI62X4Lhv5nH6HeBwBuIvAgEnpkCE4HAmCnwKBB4YArcCAR6TIG4akXGR7Gpgwi72GSMIqMsNhsIWFStyCiLzRQC+kSBvkKgQxRoKwQOAcwJw8+Ul7nFQtfWXfe9QhwAuAo30YFAAJXkBzUEQUXQDnIBAAAAAElFTkSuQmCC";
 const timeline = () => {
   const timeline2 = document.createElement("div");
   const viewPost = `
   <div class="container">
     <div class='left-timeline'>
-      <img src='./assets/icon-photo.png' alt='Foto de perfil' class='profilePhoto'>
+      <img src='${photoicon}' alt='Foto de perfil' class='profilePhoto'>
       <p class="postTitle">Ol\xE1 ${getUserName()}, bem-vindo(a) de volta!</p>
       <figure class='icones'>
-        <button type="button" class='button-timeline' id='home-btn'><img src="./assets/icon-home.png" class="icon-timeline" alt="Icone home"></button>
-        <button type="button" class='button-timeline' id='logout-btn'><img src='./assets/icon-sair.png' class="icon-timeline" alt='logout icon'></button>
+        <button type="button" class='button-timeline' id='home-btn'><img src='${homeicon}' class="icon-timeline" alt="Icone home"></button>
+        <button type="button" class='button-timeline' id='logout-btn'><img src='${exiticon}' class="icon-timeline" alt='logout icon'></button>
       </figure>
     </div>
-    <img src="./assets/imagetimeline.png" class="img-timeline" alt="edit image" >
+    <img src="${imagetimeline}" class="img-timeline" alt="edit image" >
     <div class="right-timeline">
       <div class="input-container">
         <textarea class="input-message" id="postArea" placeholder="COMPARTILHE UMA EXPERI\xCANCIA..."></textarea>
@@ -31372,22 +31900,19 @@ const timeline = () => {
         <p class='textPost'>${description}</p>
           <div class='image-icons'>
             <button type="button" class='icons-post' id='like-Post' data-post-id='${postId}'>
-              <a class='icons-post' id='icons-post'><img src='./assets/likeicon.png' alt='like image' class='icons-post'></a>
+              <a class='icons-post' id='icons-post'><img src='${likeicon}' alt='like image' class='icons-post'></a>
             </button>
           ${authorId === getUserId() ? `<button type="button" data-post-id='${postId}' class='icons-post' id='editPost'>
-            <a class='icons-post'><img src='./assets/editicon.png' alt='edit image' class='icons-post'></a>
+            <a class='icons-post'><img src='${editicon}' alt='edit image' class='icons-post'></a>
           </button>
           <button type="button" class='icons-post' id='btn-delete' data-post-id='${postId}'>
-            <img src='./assets/deleteicon.png' alt='delete image' class='icons-post'>
+            <img src='${deleteicon}' alt='delete image' class='icons-post'>
           </button>` : ""}
         </div>
         <span class='likePost' id='likes-counter-${postId}'>${whoLiked.length}</span>
       </div>
 `;
     return postElement;
-  };
-  const loadPosts = async () => {
-    await accessPost(updateListPost);
   };
   const updateListPost = (TodosPosts) => {
     postList.innerHTML = "";
@@ -31423,10 +31948,13 @@ const timeline = () => {
           }
           likesCounter.innerText = currentLikes;
         } catch (error) {
-          console.error("Error al dar like:", error);
+          console.error("Error ao dar like:", error);
         }
       });
     });
+  };
+  const loadPosts = async () => {
+    await accessPost(updateListPost);
   };
   const handlePostBtnClick = () => {
     const description = descriptionPost.value;
